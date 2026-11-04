@@ -60,6 +60,7 @@ export interface Workshop {
 }
 
 export interface CertificateRecord {
+  participationRole?: 'participant' | 'host';
   id: string;
   serialNumber: string;
   volunteerName: string;
@@ -401,6 +402,7 @@ export const MOCK_WORKSHOPS: Workshop[] = [
 export const MOCK_CERTIFICATES: CertificateRecord[] = [
   {
     id: 'CERT-DZ-2026-891',
+    participationRole: 'participant',
     serialNumber: 'VN-2026-CRA-0891-ALG',
     volunteerName: 'أمين بن علي',
     volunteerId: 'VOL-DZ-16-98214',
@@ -419,6 +421,7 @@ export const MOCK_CERTIFICATES: CertificateRecord[] = [
   },
   {
     id: 'CERT-DZ-2026-442',
+    participationRole: 'participant',
     serialNumber: 'VN-2026-ASD-0442-DJL',
     volunteerName: 'سارة مراد',
     volunteerId: 'VOL-DZ-17-43109',
@@ -437,6 +440,7 @@ export const MOCK_CERTIFICATES: CertificateRecord[] = [
   },
   {
     id: 'CERT-DZ-2026-105',
+    participationRole: 'host',
     serialNumber: 'VN-2026-BTC-0105-ORN',
     volunteerName: 'محمد رضوان زروقي',
     volunteerId: 'VOL-DZ-31-88412',
@@ -455,6 +459,7 @@ export const MOCK_CERTIFICATES: CertificateRecord[] = [
   },
   {
     id: 'CERT-DZ-2025-999',
+    participationRole: 'participant',
     serialNumber: 'VN-2025-SUS-9999-BLD',
     volunteerName: 'أحمد قاسم (حالة تجريبية ملغاة)',
     volunteerId: 'VOL-DZ-09-00129',

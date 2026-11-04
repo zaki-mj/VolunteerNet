@@ -156,7 +156,7 @@ export const VerifyCertificateScreen: React.FC = () => {
                 </div>
 
                 {/* Data Matrix */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
                   <div className="p-3.5 rounded-xl bg-white dark:bg-[#101c15] border border-emerald-100 dark:border-emerald-900 shadow-2xs space-y-1">
                     <span className="text-[var(--color-text-muted)] block">اسم المتطوع المعتمد</span>
                     <strong className="text-sm font-bold block">{currentCertificate.volunteerName}</strong>
@@ -164,15 +164,23 @@ export const VerifyCertificateScreen: React.FC = () => {
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-white dark:bg-[#101c15] border border-emerald-100 dark:border-emerald-900 shadow-2xs space-y-1">
-                    <span className="text-[var(--color-text-muted)] block">الجهة المصدرة</span>
-                    <strong className="text-sm font-bold block truncate">{currentCertificate.issuingNgoName}</strong>
-                    <span className="font-mono text-[11px] text-[var(--color-primary)]">{currentCertificate.issuingNgoLicense} (معتمدة نشطة)</span>
+                    <span className="text-[var(--color-text-muted)] block">الصفة والدور المعتمد</span>
+                    <strong className="text-sm font-bold block text-[#006233] dark:text-emerald-400">
+                      {currentCertificate.participationRole === 'host' ? 'مؤطّر ومُنظّم (Host)' : 'مُتطوّع مُشارِك (Participant)'}
+                    </strong>
+                    <span className="text-[11px] text-[var(--color-text-muted)]">معتمد في السجل الوطني</span>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-white dark:bg-[#101c15] border border-emerald-100 dark:border-emerald-900 shadow-2xs space-y-1">
-                    <span className="text-[var(--color-text-muted)] block">حجم الأثر / الساعات</span>
+                    <span className="text-[var(--color-text-muted)] block">الجهة المستضيفة</span>
+                    <strong className="text-sm font-bold block truncate">{currentCertificate.issuingNgoName}</strong>
+                    <span className="font-mono text-[11px] text-[var(--color-primary)]">{currentCertificate.issuingNgoLicense}</span>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#101c15] border border-emerald-100 dark:border-emerald-900 shadow-2xs space-y-1">
+                    <span className="text-[var(--color-text-muted)] block">حجم الساعات المعتمدة</span>
                     <strong className="text-sm font-bold text-[var(--color-secondary)] block font-mono">
-                      {currentCertificate.hoursAccredited} ساعة تطوعية معتمدة
+                      {currentCertificate.hoursAccredited} ساعة تطوعية
                     </strong>
                     <span className="text-[11px] text-[var(--color-text-muted)]">ولاية {currentCertificate.wilaya}</span>
                   </div>

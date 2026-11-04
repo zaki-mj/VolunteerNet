@@ -13,6 +13,8 @@ import {
   CheckCircle2,
   Search,
   Lock,
+  LogIn,
+  UserPlus,
 } from 'lucide-react';
 import {
   MOCK_OPPORTUNITIES,
@@ -58,30 +60,52 @@ export const HomeScreen: React.FC = () => {
           </p>
 
           {/* Action CTAs */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-4">
-            <Link
-              to="/opportunities"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-sm font-bold transition-all shadow-md hover:scale-[1.02]"
-            >
-              <Compass className="w-4 h-4" />
-              <span>استكشف الفرص المتاحة</span>
-            </Link>
+          <div className="space-y-4 pt-4">
+            {/* Primary Sign Up & Log In CTAs */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <Link
+                to="/auth?mode=register"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-sm font-bold transition-all shadow-md hover:scale-[1.02]"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span>إنشاء حساب جديد (Sign Up)</span>
+              </Link>
 
-            <Link
-              to="/workshops"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)] text-sm font-bold transition-all"
-            >
-              <GraduationCap className="w-4 h-4 text-[var(--color-primary)]" />
-              <span>تعلّم وشارك (الورشات)</span>
-            </Link>
+              <Link
+                to="/auth?mode=login"
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border-2 border-[var(--color-primary)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-primary)] text-sm font-bold transition-all shadow-xs hover:scale-[1.02]"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>تسجيل الدخول (Log In)</span>
+              </Link>
+            </div>
 
-            <Link
-              to="/verify"
-              className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl border border-[var(--color-primary)]/40 text-[var(--color-primary)] text-sm font-semibold hover:bg-[var(--color-primary-container)] transition-colors"
-            >
-              <ShieldCheck className="w-4 h-4" />
-              <span>فحص صحة الشهادات</span>
-            </Link>
+            {/* Platform Navigation CTAs */}
+            <div className="flex flex-wrap items-center justify-center gap-2.5">
+              <Link
+                to="/opportunities"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)] text-xs font-semibold transition-all"
+              >
+                <Compass className="w-3.5 h-3.5 text-[var(--color-primary)]" />
+                <span>استكشف الفرص المتاحة</span>
+              </Link>
+
+              <Link
+                to="/workshops"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)] text-xs font-semibold transition-all"
+              >
+                <GraduationCap className="w-3.5 h-3.5 text-[var(--color-primary)]" />
+                <span>تعلّم وشارك (الورشات)</span>
+              </Link>
+
+              <Link
+                to="/verify"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] text-xs font-semibold transition-all"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-[var(--color-secondary)]" />
+                <span>فحص صحة الشهادات</span>
+              </Link>
+            </div>
           </div>
 
           {/* Trust Guarantees */}
@@ -338,6 +362,39 @@ export const HomeScreen: React.FC = () => {
             <span>تحقق الآن</span>
           </button>
         </form>
+      </section>
+
+      {/* Join Community CTA Banner */}
+      <section className="rounded-3xl bg-[var(--color-surface)] border border-[var(--color-border)] p-8 sm:p-12 text-center space-y-6 shadow-xs">
+        <div className="max-w-2xl mx-auto space-y-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[var(--color-primary-container)] text-[var(--color-primary)]">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>انضم إلى مجتمع التطوع الوطني</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-black text-[var(--color-text)]">
+            ابدأ رحلتك التطوعية اليوم
+          </h2>
+          <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed">
+            سواء كنت متطوعاً ترغب في توثيق ساعاتك الميدانية أو جمعية معتمدة تبحث عن كفاءات شابة، سجّل معنا الآن وانطلق في خدمة المجتمع.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+          <Link
+            to="/auth?mode=register"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-sm font-bold transition-all shadow-md hover:scale-[1.02]"
+          >
+            <UserPlus className="w-4 h-4" />
+            <span>إنشاء حساب جديد (Sign Up)</span>
+          </Link>
+          <Link
+            to="/auth?mode=login"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)] text-sm font-bold transition-all hover:scale-[1.02]"
+          >
+            <LogIn className="w-4 h-4 text-[var(--color-primary)]" />
+            <span>تسجيل الدخول (Log In)</span>
+          </Link>
+        </div>
       </section>
 
       {/* 7. Partner NGOs Carousel / Grid */}
