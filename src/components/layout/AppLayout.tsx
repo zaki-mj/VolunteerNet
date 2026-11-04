@@ -120,26 +120,80 @@ export const AppLayout: React.FC = () => {
             <GlobalSearch />
           </div>
 
-          {/* Hamburger Menu Trigger Button */}
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => setHamburgerOpen(true)}
-              aria-label="القائمة الرئيسية"
-              className="flex items-center gap-2 p-2 sm:px-3 sm:py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)] transition-all shadow-2xs group"
+          {/* 👤 Profile Link & 🍔 Hamburger Actions Cluster */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            {/* Dedicated Profile Page Button */}
+            <NavLink
+              to="/profile"
+              title={t('nav.profile')}
+              aria-label={t('nav.profile')}
+              className={({ isActive }) =>
+                `flex items-center gap-2 p-1.5 sm:ps-2 sm:pe-3 rounded-full sm:rounded-xl border transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] ${
+                  isActive
+                    ? 'border-[var(--color-primary)] bg-[var(--color-primary-container)]/50 text-[var(--color-primary)] shadow-xs'
+                    : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-primary)]/40 text-[var(--color-text)]'
+                }`
+              }
             >
-              <Menu className="w-5 h-5 text-[var(--color-primary)] group-hover:scale-105 transition-transform" />
-              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold">
+              {/* Avatar circle with role ring & status badge */}
+              <div className="relative">
                 <div
-                  className={`w-2 h-2 rounded-full ${
+                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full sm:rounded-lg flex items-center justify-center font-bold text-xs shrink-0 transition-transform group-hover:scale-105 ${
+                    role === 'tech_team'
+                      ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 ring-2 ring-amber-500/30'
+                      : role === 'ngo'
+                      ? 'bg-[var(--color-primary-container)] text-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/30'
+                      : 'bg-[var(--color-primary)] text-white ring-2 ring-[var(--color-primary)]/20'
+                  }`}
+                >
+                  {role === 'tech_team' ? (
+                    <ShieldAlert className="w-4 h-4" />
+                  ) : role === 'ngo' ? (
+                    <Building2 className="w-4 h-4" />
+                  ) : (
+                    <User className="w-4 h-4" />
+                  )}
+                </div>
+
+                {/* Status indicator dot */}
+                <span
+                  className={`absolute -bottom-0.5 -right-0.5 w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full ring-2 ring-[var(--color-surface)] ${
                     role === 'tech_team'
                       ? 'bg-amber-500'
                       : role === 'ngo'
                       ? 'bg-[var(--color-primary)]'
-                      : 'bg-[var(--color-secondary)]'
+                      : 'bg-emerald-500'
                   }`}
                 />
-                <span className="truncate max-w-[90px]">{user.name.split(' ')[0]}</span>
               </div>
+
+              {/* Text label: Name + Role pill on screens >= sm */}
+              <div className="hidden sm:flex flex-col text-start leading-tight">
+                <span className="text-xs font-bold text-[var(--color-text)] truncate max-w-[90px]">
+                  {user.name.split(' ')[0]}
+                </span>
+                <span className="text-[10px] text-[var(--color-text-muted)] font-medium">
+                  {role === 'tech_team'
+                    ? 'فريق تقني'
+                    : role === 'ngo'
+                    ? 'جمعية'
+                    : 'متطوع'}
+                </span>
+              </div>
+            </NavLink>
+
+            {/* Subtle Vertical Divider */}
+            <div className="h-6 w-px bg-[var(--color-border)] hidden sm:block" />
+
+            {/* Dedicated Hamburger Menu Toggle Button */}
+            <button
+              onClick={() => setHamburgerOpen(true)}
+              aria-label={t('nav.menu')}
+              aria-expanded={hamburgerOpen}
+              title={t('nav.menu')}
+              className="p-2 sm:p-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-primary)]/40 text-[var(--color-text)] transition-all shadow-2xs group active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]"
+            >
+              <Menu className="w-5 h-5 text-[var(--color-text)] group-hover:text-[var(--color-primary)] group-hover:scale-105 transition-all" />
             </button>
           </div>
         </div>
