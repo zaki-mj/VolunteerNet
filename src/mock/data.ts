@@ -486,3 +486,223 @@ export const PLATFORM_STATS = {
   wilayasCovered: 58,
   verifiedCertificatesIssued: 3120,
 };
+
+
+export interface VolunteerLeaderboardEntry {
+  id: string;
+  name: string;
+  wilaya: string;
+  avatarInitials: string;
+  contributingHours: number; // Highest contributing hours
+  teachingHours: number;     // Teaching / training hours
+  learningHours: number;     // Learning / workshop hours
+  badgesCount: number;
+  featuredBadge: string;
+}
+
+export interface NgoLeaderboardEntry {
+  id: string;
+  name: string;
+  licenseNumber: string;
+  wilaya: string;
+  category: string;
+  impactedVolunteers: number;  // Number of impacted volunteers
+  activityHours: number;       // Total organized activity hours
+  completedInitiatives: number;
+}
+
+export const MOCK_VOLUNTEER_LEADERBOARD: VolunteerLeaderboardEntry[] = [
+  {
+    id: 'vol-1',
+    name: 'أمين بن علي',
+    wilaya: 'الجزائر العاصمة',
+    avatarInitials: 'أم',
+    contributingHours: 168,
+    teachingHours: 32,
+    learningHours: 28,
+    badgesCount: 7,
+    featuredBadge: 'قائد ميداني متميز',
+  },
+  {
+    id: 'vol-2',
+    name: 'مريم سعداوي',
+    wilaya: 'وهران',
+    avatarInitials: 'مر',
+    contributingHours: 124,
+    teachingHours: 96,
+    learningHours: 18,
+    badgesCount: 6,
+    featuredBadge: 'مدربة برمجة وذكاء اصطناعي',
+  },
+  {
+    id: 'vol-3',
+    name: 'فاروق بوزيد',
+    wilaya: 'الجلفة',
+    avatarInitials: 'فا',
+    contributingHours: 154,
+    teachingHours: 24,
+    learningHours: 36,
+    badgesCount: 5,
+    featuredBadge: 'بطل حزام السد الأخضر',
+  },
+  {
+    id: 'vol-4',
+    name: 'فاطمة الزهراء بن عيسى',
+    wilaya: 'قسنطينة',
+    avatarInitials: 'فط',
+    contributingHours: 92,
+    teachingHours: 44,
+    learningHours: 82,
+    badgesCount: 8,
+    featuredBadge: 'سفيرة التعلّم والتمكين',
+  },
+  {
+    id: 'vol-5',
+    name: 'حسام الدين شريف',
+    wilaya: 'سطيف',
+    avatarInitials: 'حس',
+    contributingHours: 138,
+    teachingHours: 52,
+    learningHours: 22,
+    badgesCount: 5,
+    featuredBadge: 'منسق حملات الإغاثة الشتوية',
+  },
+  {
+    id: 'vol-6',
+    name: 'ليلى بوعزيز',
+    wilaya: 'بجاية',
+    avatarInitials: 'لي',
+    contributingHours: 112,
+    teachingHours: 78,
+    learningHours: 40,
+    badgesCount: 6,
+    featuredBadge: 'مؤطرة ورشات ريادة المجتمع',
+  },
+  {
+    id: 'vol-7',
+    name: 'عمر باحمد',
+    wilaya: 'غرداية',
+    avatarInitials: 'عم',
+    contributingHours: 142,
+    teachingHours: 38,
+    learningHours: 26,
+    badgesCount: 5,
+    featuredBadge: 'حامي التراث والواحات',
+  },
+  {
+    id: 'vol-8',
+    name: 'سارة مراد',
+    wilaya: 'البليدة',
+    avatarInitials: 'سا',
+    contributingHours: 98,
+    teachingHours: 18,
+    learningHours: 64,
+    badgesCount: 4,
+    featuredBadge: 'مسعفة أولية معتمدة',
+  },
+  {
+    id: 'vol-9',
+    name: 'محمد رضوان زروقي',
+    wilaya: 'تلمسان',
+    avatarInitials: 'مح',
+    contributingHours: 106,
+    teachingHours: 68,
+    learningHours: 34,
+    badgesCount: 6,
+    featuredBadge: 'مؤطر الابتكار التقني',
+  },
+  {
+    id: 'vol-10',
+    name: 'خديجة لموشي',
+    wilaya: 'عنابة',
+    avatarInitials: 'خد',
+    contributingHours: 118,
+    teachingHours: 42,
+    learningHours: 54,
+    badgesCount: 5,
+    featuredBadge: 'منشطة التوعية البيئية الساحلية',
+  },
+];
+
+export const MOCK_NGO_LEADERBOARD: NgoLeaderboardEntry[] = [
+  {
+    id: 'ngo-lead-1',
+    name: 'الهلال الأحمر الجزائري - لجنة الإغاثة وتأهيل الشباب',
+    licenseNumber: 'CRA-DZ-16-001',
+    wilaya: 'الجزائر العاصمة',
+    category: 'إغاثة وصحة مجتمعية',
+    impactedVolunteers: 2450,
+    activityHours: 14200,
+    completedInitiatives: 48,
+  },
+  {
+    id: 'ngo-lead-2',
+    name: 'جمعية السد الأخضر والتنمية المستدامة',
+    licenseNumber: 'ASD-DZ-17-089',
+    wilaya: 'الجلفة',
+    category: 'بيئة وتشجير وطني',
+    impactedVolunteers: 1820,
+    activityHours: 11800,
+    completedInitiatives: 34,
+  },
+  {
+    id: 'ngo-lead-3',
+    name: 'نادي بصمة شباب التقني - وهران',
+    licenseNumber: 'BYTC-DZ-31-118',
+    wilaya: 'وهران',
+    category: 'تكنولوجيا ومحو أمية رقمية',
+    impactedVolunteers: 1340,
+    activityHours: 8900,
+    completedInitiatives: 28,
+  },
+  {
+    id: 'ngo-lead-4',
+    name: 'جمعية إقرأ لمحو الأمية وتنمية المهارات',
+    licenseNumber: 'IQRA-DZ-25-055',
+    wilaya: 'قسنطينة',
+    category: 'تعليم ومحو أمية',
+    impactedVolunteers: 980,
+    activityHours: 7400,
+    completedInitiatives: 22,
+  },
+  {
+    id: 'ngo-lead-5',
+    name: 'جمعية حماية التراث وواحات الجنوب',
+    licenseNumber: 'SPPO-DZ-47-012',
+    wilaya: 'غرداية',
+    category: 'تراث وسياحة بيئية',
+    impactedVolunteers: 720,
+    activityHours: 5100,
+    completedInitiatives: 16,
+  },
+  {
+    id: 'ngo-lead-6',
+    name: 'الجمعية الولائية للنشاطات الشبانية والبيئة',
+    licenseNumber: 'AJSE-DZ-19-041',
+    wilaya: 'سطيف',
+    category: 'بيئة وشباب',
+    impactedVolunteers: 640,
+    activityHours: 4600,
+    completedInitiatives: 14,
+  },
+  {
+    id: 'ngo-lead-7',
+    name: 'جمعية أمل للتضامن والعمل الخيري',
+    licenseNumber: 'AMAL-DZ-06-033',
+    wilaya: 'بجاية',
+    category: 'تضامن ورعاية أسرية',
+    impactedVolunteers: 580,
+    activityHours: 3900,
+    completedInitiatives: 12,
+  },
+  {
+    id: 'ngo-lead-8',
+    name: 'رابطة الغوص وحماية الساحل المرجاني',
+    licenseNumber: 'RPPC-DZ-23-018',
+    wilaya: 'عنابة',
+    category: 'حماية البيئة البحرية',
+    impactedVolunteers: 490,
+    activityHours: 3200,
+    completedInitiatives: 9,
+  },
+];

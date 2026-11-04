@@ -13,6 +13,8 @@ import { VerifyCertificateScreen } from './pages/VerifyCertificateScreen';
 import { NgoDashboardScreen } from './pages/NgoDashboardScreen';
 import { TechTeamAdminScreen } from './pages/TechTeamAdminScreen';
 import { AuthScreen } from './pages/AuthScreen';
+import { ProfileScreen } from './pages/ProfileScreen';
+import { LeaderboardScreen } from './pages/LeaderboardScreen';
 
 export const App: React.FC = () => {
   return (
@@ -24,6 +26,7 @@ export const App: React.FC = () => {
           <Route path="opportunities/:id" element={<OpportunityDetailScreen />} />
           <Route path="workshops" element={<WorkshopsScreen />} />
           <Route path="workshops/:id" element={<WorkshopDetailScreen />} />
+          <Route path="leaderboard" element={<LeaderboardScreen />} />
           <Route path="activity" element={<ActivityScreen />} />
           <Route path="certificates" element={<CertificatesScreen />} />
           <Route path="certificates/:id" element={<CertificateDetailScreen />} />
@@ -31,6 +34,7 @@ export const App: React.FC = () => {
           <Route path="ngo/dashboard" element={<NgoDashboardScreen />} />
           <Route path="admin" element={<Navigate to="/admin/ngos" replace />} />
           <Route path="admin/ngos" element={<TechTeamAdminScreen />} />
+          <Route path="profile" element={<ProfileScreen />} />
           <Route path="auth" element={<AuthScreen />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
