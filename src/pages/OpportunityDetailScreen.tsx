@@ -144,28 +144,34 @@ export const OpportunityDetailScreen: React.FC = () => {
         {/* Event Photos Gallery */}
         {opportunity.images && opportunity.images.length > 0 && (
           <div className="space-y-3 pt-2">
-            <h3 className="font-bold text-sm text-[var(--color-text)] flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>معرض صور الفعالية الميدانية (دار الشباب سبدو)</span>
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-sky-50 dark:bg-sky-950/30 aspect-video flex items-center justify-center p-6 shadow-xs">
-                <img
-                  src={opportunity.images[0]}
-                  alt="شعار ورشة سكراتش"
-                  className="max-h-full object-contain drop-shadow-sm"
-                />
-              </div>
-              <div className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/5 aspect-video relative group shadow-xs">
-                <img
-                  src={opportunity.images[1]}
-                  alt="أطفال يبرمجون بدار الشباب سبدو"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3 text-white text-xs font-semibold">
-                  <span>ورشة سكراتش للأطفال بدار الشباب سبدو (29 أكتوبر 2026)</span>
+            <div className="flex items-center justify-between">
+              <h3 className="font-bold text-sm text-[var(--color-text)] flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-amber-500" />
+                <span>معرض صور الفعالية الميدانية (دار الشباب سبدو - ولاية تلمسان)</span>
+              </h3>
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                {opportunity.images.length} صور موثقة 📸
+              </span>
+            </div>
+            <div className={`grid gap-4 ${
+              opportunity.images.length >= 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'
+            }`}>
+              {opportunity.images.map((imgSrc, idx) => (
+                <div
+                  key={idx}
+                  className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-slate-50 dark:bg-slate-900/40 aspect-video flex items-center justify-center p-2 relative group shadow-xs hover:border-[var(--color-primary)] transition-all"
+                >
+                  <img
+                    src={imgSrc}
+                    alt={`${opportunity.title} - صورة ${idx + 1}`}
+                    className="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white text-[11px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between rounded-b-xl">
+                    <span>دار الشباب سبدو • تلمسان</span>
+                    <span>صورة {idx + 1}</span>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         )}
