@@ -15,6 +15,7 @@ import { TechTeamAdminScreen } from './pages/TechTeamAdminScreen';
 import { AuthScreen } from './pages/AuthScreen';
 import { ProfileScreen } from './pages/ProfileScreen';
 import { LeaderboardScreen } from './pages/LeaderboardScreen';
+import { AddOpportunityScreen } from './pages/AddOpportunityScreen';
 
 export const App: React.FC = () => {
   return (
@@ -23,7 +24,9 @@ export const App: React.FC = () => {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomeScreen />} />
           <Route path="opportunities" element={<OpportunitiesScreen />} />
+          <Route path="opportunities/new" element={<AddOpportunityScreen />} />
           <Route path="opportunities/:id" element={<OpportunityDetailScreen />} />
+          <Route path="ngo/opportunities/new" element={<AddOpportunityScreen />} />
           <Route path="workshops" element={<WorkshopsScreen />} />
           <Route path="workshops/:id" element={<WorkshopDetailScreen />} />
           <Route path="leaderboard" element={<LeaderboardScreen />} />

@@ -372,7 +372,7 @@ export const AppLayout: React.FC = () => {
                   {role === 'ngo' && (
                     <>
                       <NavLink
-                        to="/ngo/dashboard"
+                        to="/opportunities/new"
                         onClick={() => setHamburgerOpen(false)}
                         className={({ isActive }) =>
                           `flex items-center gap-2.5 p-2.5 rounded-xl text-xs font-bold transition-colors ${

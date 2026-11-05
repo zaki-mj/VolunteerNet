@@ -77,16 +77,12 @@ export const OpportunityMap: React.FC<OpportunityMapProps> = ({
       zoomControl: true,
     });
 
-    // Real OpenStreetMap Tiles via CartoDB Voyager (clean, fast, multi-lingual place names)
-    L.tileLayer(
-      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-      {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19,
-      }
-    ).addTo(map);
+    // 100% Free OpenStreetMap Tiles - No API key needed!
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(map);
 
     const markersLayer = L.layerGroup().addTo(map);
     mapRef.current = map;

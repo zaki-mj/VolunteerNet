@@ -904,3 +904,115 @@ export const MOCK_NGO_LEADERBOARD: NgoLeaderboardEntry[] = [
     completedInitiatives: 9,
   },
 ];
+
+
+export const ALGERIA_WILAYAS_58 = [
+  { code: '01', name: '01 - أدرار', wilaya: 'أدرار', lat: 27.8742, lng: -0.2939 },
+  { code: '02', name: '02 - الشلف', wilaya: 'الشلف', lat: 36.1647, lng: 1.3317 },
+  { code: '03', name: '03 - الأغواط', wilaya: 'الأغواط', lat: 33.8000, lng: 2.8651 },
+  { code: '04', name: '04 - أم البواقي', wilaya: 'أم البواقي', lat: 35.8755, lng: 7.1135 },
+  { code: '05', name: '05 - باتنة', wilaya: 'باتنة', lat: 35.5560, lng: 6.1741 },
+  { code: '06', name: '06 - بجاية', wilaya: 'بجاية', lat: 36.7559, lng: 5.0843 },
+  { code: '07', name: '07 - بسكرة', wilaya: 'بسكرة', lat: 34.8504, lng: 5.7281 },
+  { code: '08', name: '08 - بشار', wilaya: 'بشار', lat: 31.6167, lng: -2.2167 },
+  { code: '09', name: '09 - البليدة', wilaya: 'البليدة', lat: 36.4700, lng: 2.8300 },
+  { code: '10', name: '10 - البويرة', wilaya: 'البويرة', lat: 36.3749, lng: 3.9020 },
+  { code: '11', name: '11 - تمنراست', wilaya: 'تمنراست', lat: 22.7850, lng: 5.5228 },
+  { code: '12', name: '12 - تبسة', wilaya: 'تبسة', lat: 35.4042, lng: 8.1242 },
+  { code: '13', name: '13 - تلمسان', wilaya: 'تلمسان', lat: 34.8828, lng: -1.3167 },
+  { code: '14', name: '14 - تيارت', wilaya: 'تيارت', lat: 35.3710, lng: 1.3170 },
+  { code: '15', name: '15 - تيزي وزو', wilaya: 'تيزي وزو', lat: 36.7118, lng: 4.0459 },
+  { code: '16', name: '16 - الجزائر العاصمة', wilaya: 'الجزائر العاصمة', lat: 36.7538, lng: 3.0588 },
+  { code: '17', name: '17 - الجلفة', wilaya: 'الجلفة', lat: 34.6728, lng: 3.2503 },
+  { code: '18', name: '18 - جيجل', wilaya: 'جيجل', lat: 36.8206, lng: 5.7667 },
+  { code: '19', name: '19 - سطيف', wilaya: 'سطيف', lat: 36.1911, lng: 5.4137 },
+  { code: '20', name: '20 - سعيدة', wilaya: 'سعيدة', lat: 34.8303, lng: 0.1517 },
+  { code: '21', name: '21 - سكيكدة', wilaya: 'سكيكدة', lat: 36.8762, lng: 6.9092 },
+  { code: '22', name: '22 - سيدي بلعباس', wilaya: 'سيدي بلعباس', lat: 35.1899, lng: -0.6308 },
+  { code: '23', name: '23 - عنابة', wilaya: 'عنابة', lat: 36.9000, lng: 7.7667 },
+  { code: '24', name: '24 - قالمة', wilaya: 'قالمة', lat: 36.4621, lng: 7.4261 },
+  { code: '25', name: '25 - قسنطينة', wilaya: 'قسنطينة', lat: 36.3650, lng: 6.6147 },
+  { code: '26', name: '26 - المدية', wilaya: 'المدية', lat: 36.2642, lng: 2.7539 },
+  { code: '27', name: '27 - مستغانم', wilaya: 'مستغانم', lat: 35.9312, lng: 0.0892 },
+  { code: '28', name: '28 - المسيلة', wilaya: 'المسيلة', lat: 35.7058, lng: 4.5419 },
+  { code: '29', name: '29 - معسكر', wilaya: 'معسكر', lat: 35.3966, lng: 0.1403 },
+  { code: '30', name: '30 - ورقلة', wilaya: 'ورقلة', lat: 31.9493, lng: 5.3250 },
+  { code: '31', name: '31 - وهران', wilaya: 'وهران', lat: 35.6987, lng: -0.6349 },
+  { code: '32', name: '32 - البيض', wilaya: 'البيض', lat: 33.6800, lng: 1.0192 },
+  { code: '33', name: '33 - إليزي', wilaya: 'إليزي', lat: 26.4858, lng: 8.4689 },
+  { code: '34', name: '34 - برج بوعريريج', wilaya: 'برج بوعريريج', lat: 36.0732, lng: 4.7611 },
+  { code: '35', name: '35 - بومرداس', wilaya: 'بومرداس', lat: 36.7599, lng: 3.4728 },
+  { code: '36', name: '36 - الطارف', wilaya: 'الطارف', lat: 36.7672, lng: 8.3139 },
+  { code: '37', name: '37 - تندوف', wilaya: 'تندوف', lat: 27.6711, lng: -8.1474 },
+  { code: '38', name: '38 - تسمسيلت', wilaya: 'تسمسيلت', lat: 35.6072, lng: 1.8108 },
+  { code: '39', name: '39 - الوادي', wilaya: 'الوادي', lat: 33.3683, lng: 6.8675 },
+  { code: '40', name: '40 - خنشلة', wilaya: 'خنشلة', lat: 35.4358, lng: 7.1433 },
+  { code: '41', name: '41 - سوق أهراس', wilaya: 'سوق أهراس', lat: 36.2864, lng: 7.9511 },
+  { code: '42', name: '42 - تيبازة', wilaya: 'تيبازة', lat: 36.5897, lng: 2.4475 },
+  { code: '43', name: '43 - ميلة', wilaya: 'ميلة', lat: 36.4503, lng: 6.2644 },
+  { code: '44', name: '44 - عين الدفلى', wilaya: 'عين الدفلى', lat: 36.2644, lng: 1.9678 },
+  { code: '45', name: '45 - النعامة', wilaya: 'النعامة', lat: 33.2667, lng: -0.3167 },
+  { code: '46', name: '46 - عين تموشنت', wilaya: 'عين تموشنت', lat: 35.2975, lng: -1.1404 },
+  { code: '47', name: '47 - غرداية', wilaya: 'غرداية', lat: 32.4909, lng: 3.6735 },
+  { code: '48', name: '48 - غليزان', wilaya: 'غليزان', lat: 35.7372, lng: 0.5558 },
+  { code: '49', name: '49 - تيميمون', wilaya: 'تيميمون', lat: 29.2639, lng: 0.2311 },
+  { code: '50', name: '50 - برج باجي مختار', wilaya: 'برج باجي مختار', lat: 21.3275, lng: 0.9547 },
+  { code: '51', name: '51 - أولاد جلال', wilaya: 'أولاد جلال', lat: 34.4333, lng: 5.0667 },
+  { code: '52', name: '52 - بني عباس', wilaya: 'بني عباس', lat: 30.1333, lng: -2.1667 },
+  { code: '53', name: '53 - عين صالح', wilaya: 'عين صالح', lat: 27.1936, lng: 2.4608 },
+  { code: '54', name: '54 - عين قزام', wilaya: 'عين قزام', lat: 19.5686, lng: 5.7725 },
+  { code: '55', name: '55 - توقرت', wilaya: 'توقرت', lat: 33.1053, lng: 6.0583 },
+  { code: '56', name: '56 - جانت', wilaya: 'جانت', lat: 24.5539, lng: 9.4847 },
+  { code: '57', name: '57 - المغير', wilaya: 'المغير', lat: 33.9500, lng: 5.9167 },
+  { code: '58', name: '58 - المنيعة', wilaya: 'المنيعة', lat: 30.5847, lng: 2.8797 },
+];
+
+export const getStoredOpportunities = (): Opportunity[] => {
+  try {
+    const raw = localStorage.getItem('volunteernet_custom_opportunities');
+    if (raw) {
+      const parsed: Opportunity[] = JSON.parse(raw);
+      return [...parsed, ...MOCK_OPPORTUNITIES];
+    }
+  } catch (err) {
+    console.error('Error reading stored opportunities:', err);
+  }
+  return MOCK_OPPORTUNITIES;
+};
+
+export const saveCustomOpportunity = (opp: Opportunity): void => {
+  try {
+    const raw = localStorage.getItem('volunteernet_custom_opportunities');
+    const list: Opportunity[] = raw ? JSON.parse(raw) : [];
+    list.unshift(opp);
+    localStorage.setItem('volunteernet_custom_opportunities', JSON.stringify(list));
+    window.dispatchEvent(new Event('volunteernet_data_updated'));
+  } catch (err) {
+    console.error('Error saving opportunity:', err);
+  }
+};
+
+export const getStoredWorkshops = (): Workshop[] => {
+  try {
+    const raw = localStorage.getItem('volunteernet_custom_workshops');
+    if (raw) {
+      const parsed: Workshop[] = JSON.parse(raw);
+      return [...parsed, ...MOCK_WORKSHOPS];
+    }
+  } catch (err) {
+    console.error('Error reading stored workshops:', err);
+  }
+  return MOCK_WORKSHOPS;
+};
+
+export const saveCustomWorkshop = (ws: Workshop): void => {
+  try {
+    const raw = localStorage.getItem('volunteernet_custom_workshops');
+    const list: Workshop[] = raw ? JSON.parse(raw) : [];
+    list.unshift(ws);
+    localStorage.setItem('volunteernet_custom_workshops', JSON.stringify(list));
+    window.dispatchEvent(new Event('volunteernet_data_updated'));
+  } catch (err) {
+    console.error('Error saving workshop:', err);
+  }
+};

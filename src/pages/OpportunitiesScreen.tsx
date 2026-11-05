@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
   Compass,
@@ -14,13 +14,24 @@ import {
   HeartHandshake,
   GraduationCap,
 } from 'lucide-react';
-import { MOCK_OPPORTUNITIES, MOCK_WORKSHOPS } from '../mock/data';
+import { getStoredOpportunities, getStoredWorkshops, type Opportunity, type Workshop } from '../mock/data';
 import { OpportunityMap, type PointTypeFilter } from '../components/opportunities/OpportunityMap';
 
 type ViewMode = 'split' | 'map' | 'grid';
 
 export const OpportunitiesScreen: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [opportunities, setOpportunities] = useState<Opportunity[]>(() => getStoredOpportunities());
+  const [workshops, setWorkshops] = useState<Workshop[]>(() => getStoredWorkshops());
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setOpportunities(getStoredOpportunities());
+      setWorkshops(getStoredWorkshops());
+    };
+    window.addEventListener('volunteernet_data_updated', handleUpdate);
+    return () => window.removeEventListener('volunteernet_data_updated', handleUpdate);
+  }, []);
 
   const initialView = (searchParams.get('view') as ViewMode) || 'split';
   const initialWilaya = searchParams.get('wilaya') || '';
@@ -29,7 +40,7 @@ export const OpportunitiesScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedWilaya, setSelectedWilaya] = useState(initialWilaya);
   const [pointTypeFilter, setPointTypeFilter] = useState<PointTypeFilter>('all');
-  const [selectedId, setSelectedId] = useState<string | undefined>(MOCK_OPPORTUNITIES[0]?.id);
+  const [selectedId, setSelectedId] = useState<string | undefined>(() => opportunities[0]?.id);
   const [appliedId, setAppliedId] = useState<string | null>(null);
 
   // Update URL params when view or wilaya changes
@@ -54,8 +65,8 @@ export const OpportunitiesScreen: React.FC = () => {
   // Unique Wilayas from both opportunities and workshops
   const availableWilayas = useMemo(() => {
     const set = new Set<string>();
-    MOCK_OPPORTUNITIES.forEach((o) => set.add(o.wilaya));
-    MOCK_WORKSHOPS.forEach((w) => {
+    opportunities.forEach((o) => set.add(o.wilaya));
+    workshops.forEach((w) => {
       if (w.wilaya) set.add(w.wilaya);
     });
     return Array.from(set).sort();
@@ -65,7 +76,7 @@ export const OpportunitiesScreen: React.FC = () => {
   const filteredOpportunities = useMemo(() => {
     if (pointTypeFilter === 'learning') return [];
 
-    return MOCK_OPPORTUNITIES.filter((opp) => {
+    return opportunities.filter((opp) => {
       if (selectedWilaya && opp.wilaya !== selectedWilaya) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -85,7 +96,7 @@ export const OpportunitiesScreen: React.FC = () => {
   const filteredWorkshops = useMemo(() => {
     if (pointTypeFilter === 'volunteer') return [];
 
-    return MOCK_WORKSHOPS.filter((ws) => {
+    return workshops.filter((ws) => {
       if (selectedWilaya && ws.wilaya !== selectedWilaya) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -229,7 +240,7 @@ export const OpportunitiesScreen: React.FC = () => {
           >
             <span>كافة النقاط</span>
             <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[var(--color-surface-muted)] text-[var(--color-text-muted)]">
-              {MOCK_OPPORTUNITIES.length + MOCK_WORKSHOPS.length}
+              {opportunities.length + workshops.length}
             </span>
           </button>
 
@@ -250,7 +261,7 @@ export const OpportunitiesScreen: React.FC = () => {
                   : 'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)]'
               }`}
             >
-              {MOCK_OPPORTUNITIES.length}
+              {opportunities.length}
             </span>
           </button>
 
@@ -271,7 +282,7 @@ export const OpportunitiesScreen: React.FC = () => {
                   : 'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)]'
               }`}
             >
-              {MOCK_WORKSHOPS.length}
+              {workshops.length}
             </span>
           </button>
         </div>

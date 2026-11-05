@@ -14,7 +14,7 @@ import {
   Map as MapIcon,
   ChevronLeft,
 } from 'lucide-react';
-import { MOCK_OPPORTUNITIES } from '../mock/data';
+import { MOCK_OPPORTUNITIES, getStoredOpportunities } from '../mock/data';
 
 export const OpportunityDetailScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,7 +23,7 @@ export const OpportunityDetailScreen: React.FC = () => {
 
   // Look up opportunity by ID, fallback to the first
   const opportunity =
-    MOCK_OPPORTUNITIES.find((opp) => opp.id === id) || MOCK_OPPORTUNITIES[0];
+    getStoredOpportunities().find((opp) => opp.id === id) || MOCK_OPPORTUNITIES[0];
 
   const spotsLeft = opportunity.spotsTotal - opportunity.spotsTaken;
   const progressPercent = Math.min(
