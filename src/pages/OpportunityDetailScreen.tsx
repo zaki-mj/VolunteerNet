@@ -16,6 +16,18 @@ import {
 } from 'lucide-react';
 import { MOCK_OPPORTUNITIES, getStoredOpportunities } from '../mock/data';
 
+
+export const resolveEventImageUrl = (path: string): string => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+    return path;
+  }
+  const base = import.meta.env.BASE_URL || '/';
+  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${cleanBase}${cleanPath}`;
+};
+
 export const OpportunityDetailScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -147,31 +159,68 @@ export const OpportunityDetailScreen: React.FC = () => {
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-sm text-[var(--color-text)] flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-amber-500" />
-                <span>معرض صور الفعالية الميدانية (دار الشباب سبدو - ولاية تلمسان)</span>
+                <span>معرض صور الفعالية (دار الشباب سبدو - ولاية تلمسان)</span>
               </h3>
               <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
                 {opportunity.images.length} صور موثقة 📸
               </span>
             </div>
-            <div className={`grid gap-4 ${
-              opportunity.images.length >= 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1 sm:grid-cols-2'
-            }`}>
-              {opportunity.images.map((imgSrc, idx) => (
-                <div
-                  key={idx}
-                  className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-slate-50 dark:bg-slate-900/40 aspect-video flex items-center justify-center p-2 relative group shadow-xs hover:border-[var(--color-primary)] transition-all"
-                >
-                  <img
-                    src={imgSrc}
-                    alt={`${opportunity.title} - صورة ${idx + 1}`}
-                    className="w-full h-full object-contain rounded-xl transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-white text-[11px] font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-between rounded-b-xl">
-                    <span>دار الشباب سبدو • تلمسان</span>
-                    <span>صورة {idx + 1}</span>
-                  </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
+              {/* Primary Photo: Kids in Dar Chabab Sebdou (7 cols) */}
+              <div className="md:col-span-7 rounded-2xl overflow-hidden border border-[var(--color-border)] bg-slate-900 relative min-h-[280px] shadow-sm group flex items-center justify-center">
+                <img
+                  src={resolveEventImageUrl(opportunity.images[1] || opportunity.images[0])}
+                  alt="أطفال يبرمجون بدار الشباب سبدو"
+                  className="w-full h-full max-h-[360px] object-cover object-top transition-transform duration-300 group-hover:scale-102"
+                  onError={(e) => {
+                    const filename = (opportunity.images![1] || opportunity.images![0]).split('/').pop();
+                    e.currentTarget.src = `events/${filename}`;
+                  }}
+                />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3.5 text-white">
+                  <span className="font-bold text-xs block">
+                    أطفال يبرمجون بقاعة الإعلام الآلي - دار الشباب سبدو (27 نوفمبر 2026)
+                  </span>
+                  <span className="text-[11px] text-slate-300">
+                    تأطير وإشراف المتطوعين الشباب بولاية تلمسان
+                  </span>
                 </div>
-              ))}
+              </div>
+
+              {/* Secondary Photos / Logo (5 cols) */}
+              <div className="md:col-span-5 flex flex-col gap-3">
+                {/* Scratch Mascot */}
+                <div className="flex-1 rounded-2xl overflow-hidden border border-[var(--color-border)] bg-amber-500/10 dark:bg-amber-950/20 p-4 flex flex-col items-center justify-center relative shadow-xs">
+                  <img
+                    src={resolveEventImageUrl(opportunity.images[0])}
+                    alt="شعار سكراتش"
+                    className="w-full h-36 object-contain drop-shadow-sm"
+                    onError={(e) => {
+                      const filename = opportunity.images![0].split('/').pop();
+                      e.currentTarget.src = `events/${filename}`;
+                    }}
+                  />
+                  <span className="text-xs font-bold text-amber-900 dark:text-amber-200 mt-2">
+                    شعار الورشة التفاعلية • لغة سكراتش
+                  </span>
+                </div>
+
+                {/* 3rd Image if exists */}
+                {opportunity.images[2] && (
+                  <div className="h-24 rounded-2xl overflow-hidden border border-[var(--color-border)] bg-sky-50 dark:bg-sky-950/20 p-2 flex items-center justify-center shadow-xs">
+                    <img
+                      src={resolveEventImageUrl(opportunity.images[2])}
+                      alt="Scratch banner"
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        const filename = opportunity.images![2].split('/').pop();
+                        e.currentTarget.src = `events/${filename}`;
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}

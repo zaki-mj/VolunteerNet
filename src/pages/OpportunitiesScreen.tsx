@@ -20,6 +20,18 @@ import { OpportunityMap, type PointTypeFilter } from '../components/opportunitie
 
 type ViewMode = 'split' | 'map' | 'grid';
 
+export const resolveEventImageUrl = (path: string): string => {
+  if (!path) return '';
+  if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('data:')) {
+    return path;
+  }
+  const base = import.meta.env.BASE_URL || '/';
+  const cleanBase = base.endsWith('/') ? base : `${base}/`;
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${cleanBase}${cleanPath}`;
+};
+
+
 export const OpportunitiesScreen: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [opportunities, setOpportunities] = useState<Opportunity[]>(() => getStoredOpportunities());
@@ -501,16 +513,49 @@ export const OpportunitiesScreen: React.FC = () => {
                         )}
                       </div>
 
-                      {opp.images && opp.images[1] && (
-                        <div className="my-2 h-28 rounded-xl overflow-hidden border border-[var(--color-border)] relative group">
-                          <img
-                            src={opp.images[1]}
-                            alt={opp.title}
-                            className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                          />
-                          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">
-                            صور حية من سبدو 📸
-                          </div>
+                      {opp.images && opp.images.length > 0 && (
+                        <div className="my-2.5 rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface-muted)] shadow-2xs">
+                          {opp.images.length >= 2 ? (
+                            <div className="grid grid-cols-2 h-36 gap-1.5 p-1.5">
+                              <div className="h-full rounded-lg overflow-hidden bg-white dark:bg-slate-900 border border-[var(--color-border)] flex items-center justify-center p-2">
+                                <img
+                                  src={resolveEventImageUrl(opp.images[0])}
+                                  alt="شعار سكراتش"
+                                  className="w-full h-full object-contain"
+                                  onError={(e) => {
+                                    const filename = opp.images![0].split('/').pop();
+                                    e.currentTarget.src = `events/${filename}`;
+                                  }}
+                                />
+                              </div>
+                              <div className="h-full rounded-lg overflow-hidden relative border border-[var(--color-border)] bg-slate-900">
+                                <img
+                                  src={resolveEventImageUrl(opp.images[1])}
+                                  alt="أطفال يبرمجون بدار الشباب سبدو"
+                                  className="w-full h-full object-cover object-top transition-transform hover:scale-105"
+                                  onError={(e) => {
+                                    const filename = opp.images![1].split('/').pop();
+                                    e.currentTarget.src = `events/${filename}`;
+                                  }}
+                                />
+                                <span className="absolute bottom-1 end-1 px-1.5 py-0.5 rounded-md bg-black/75 text-white text-[9px] font-bold backdrop-blur-xs">
+                                  سبدو 📸
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="h-36 relative">
+                              <img
+                                src={resolveEventImageUrl(opp.images[0])}
+                                alt={opp.title}
+                                className="w-full h-full object-cover object-top"
+                                onError={(e) => {
+                                  const filename = opp.images![0].split('/').pop();
+                                  e.currentTarget.src = `events/${filename}`;
+                                }}
+                              />
+                            </div>
+                          )}
                         </div>
                       )}
                       <h4 className="font-bold text-sm text-[var(--color-text)] leading-snug">
