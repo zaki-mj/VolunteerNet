@@ -70,12 +70,13 @@ export const AppLayout: React.FC = () => {
     }
   };
 
-  // ONLY Shared Public Tabs in Top Navbar:
-  // 1. Home, 2. Volunteer Opportunities, 3. Learn & Participate, 4. Verify Certificates
+  // Shared Public Tabs in Top Navbar:
+  // 1. Home, 2. Opportunities (with Map Discovery), 3. Learn & Participate, 4. Leaderboard, 5. Verify Certificates
   const publicNavTabs = [
     { to: '/', label: t('nav.home'), icon: Home },
     { to: '/opportunities', label: t('nav.opportunities'), icon: Compass },
     { to: '/workshops', label: t('nav.workshops'), icon: GraduationCap },
+    { to: '/leaderboard', label: t('nav.leaderboard'), icon: Trophy },
     { to: '/verify', label: t('nav.verify'), icon: ShieldCheck },
   ];
 
@@ -445,22 +446,6 @@ export const AppLayout: React.FC = () => {
                       </NavLink>
                     </>
                   )}
-
-                  {/* Shared Leaderboard inside hamburger menu */}
-                  <NavLink
-                    to="/leaderboard"
-                    onClick={() => setHamburgerOpen(false)}
-                    className={({ isActive }) =>
-                      `flex items-center gap-2.5 p-2.5 rounded-xl text-xs font-bold transition-colors ${
-                        isActive
-                          ? 'bg-[var(--color-primary-container)] text-[var(--color-primary)]'
-                          : 'hover:bg-[var(--color-surface-hover)] text-[var(--color-text)]'
-                      }`
-                    }
-                  >
-                    <Trophy className="w-4 h-4 text-amber-500" />
-                    <span>{t('nav.leaderboard')}</span>
-                  </NavLink>
 
                   {/* Profile Section */}
                   <NavLink

@@ -91,6 +91,14 @@ export const HomeScreen: React.FC = () => {
               </Link>
 
               <Link
+                to="/opportunities?view=map"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--color-primary)]/40 bg-[var(--color-primary-container)]/30 hover:bg-[var(--color-primary-container)]/60 text-[var(--color-primary)] text-xs font-bold transition-all shadow-2xs"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                <span>خريطة الفرص التفاعلية 🗺️</span>
+              </Link>
+
+              <Link
                 to="/workshops"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)] text-xs font-semibold transition-all"
               >
