@@ -4,7 +4,7 @@ import { AppLayout } from './components/layout/AppLayout';
 import { HomeScreen } from './pages/HomeScreen';
 import { OpportunitiesScreen } from './pages/OpportunitiesScreen';
 import { OpportunityDetailScreen } from './pages/OpportunityDetailScreen';
-import { WorkshopsScreen } from './pages/WorkshopsScreen';
+
 import { WorkshopDetailScreen } from './pages/WorkshopDetailScreen';
 import { ActivityScreen } from './pages/ActivityScreen';
 import { CertificatesScreen } from './pages/CertificatesScreen';
@@ -27,7 +27,7 @@ export const App: React.FC = () => {
           <Route path="opportunities/new" element={<AddOpportunityScreen />} />
           <Route path="opportunities/:id" element={<OpportunityDetailScreen />} />
           <Route path="ngo/opportunities/new" element={<AddOpportunityScreen />} />
-          <Route path="workshops" element={<WorkshopsScreen />} />
+          <Route path="workshops" element={<Navigate to="/opportunities?type=learning" replace />} />
           <Route path="workshops/:id" element={<WorkshopDetailScreen />} />
           <Route path="leaderboard" element={<LeaderboardScreen />} />
           <Route path="activity" element={<ActivityScreen />} />

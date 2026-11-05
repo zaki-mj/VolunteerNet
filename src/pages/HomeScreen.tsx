@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Compass,
-  GraduationCap,
   ShieldCheck,
   Building2,
   Clock,
@@ -15,6 +14,7 @@ import {
   Lock,
   LogIn,
   UserPlus,
+  Trophy,
 } from 'lucide-react';
 import {
   MOCK_OPPORTUNITIES,
@@ -99,11 +99,11 @@ export const HomeScreen: React.FC = () => {
               </Link>
 
               <Link
-                to="/workshops"
+                to="/leaderboard"
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] hover:bg-[var(--color-surface-hover)] text-[var(--color-text)] text-xs font-semibold transition-all"
               >
-                <GraduationCap className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-                <span>تعلّم وشارك (الورشات)</span>
+                <Trophy className="w-3.5 h-3.5 text-amber-500" />
+                <span>لوحة الشرف الوطنية</span>
               </Link>
 
               <Link
@@ -246,7 +246,7 @@ export const HomeScreen: React.FC = () => {
           </div>
 
           <Link
-            to="/workshops"
+            to="/opportunities?type=learning"
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold hover:bg-[var(--color-primary-hover)] transition-all shrink-0 self-start sm:self-auto"
           >
             <span>استعراض الورشات</span>

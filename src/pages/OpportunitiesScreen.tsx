@@ -39,7 +39,19 @@ export const OpportunitiesScreen: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>(initialView);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedWilaya, setSelectedWilaya] = useState(initialWilaya);
-  const [pointTypeFilter, setPointTypeFilter] = useState<PointTypeFilter>('all');
+  const initialType = (searchParams.get('type') as PointTypeFilter) || 'all';
+  const [pointTypeFilter, setPointTypeFilter] = useState<PointTypeFilter>(initialType);
+
+  const handlePointTypeFilterChange = (type: PointTypeFilter) => {
+    setPointTypeFilter(type);
+    const newParams = new URLSearchParams(searchParams);
+    if (type !== 'all') {
+      newParams.set('type', type);
+    } else {
+      newParams.delete('type');
+    }
+    setSearchParams(newParams);
+  };
   const [selectedId, setSelectedId] = useState<string | undefined>(() => opportunities[0]?.id);
   const [appliedId, setAppliedId] = useState<string | null>(null);
 
@@ -231,7 +243,7 @@ export const OpportunitiesScreen: React.FC = () => {
         {/* 🌟 Simple 2-Point Type Filter Chips (Volunteering vs Learning) */}
         <div className="flex items-center gap-2 overflow-x-auto pt-2 no-scrollbar">
           <button
-            onClick={() => setPointTypeFilter('all')}
+            onClick={() => handlePointTypeFilterChange('all')}
             className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
               pointTypeFilter === 'all'
                 ? 'bg-[var(--color-surface)] text-[var(--color-text)] border-2 border-[var(--color-primary)] shadow-xs'
@@ -245,7 +257,7 @@ export const OpportunitiesScreen: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setPointTypeFilter('volunteer')}
+            onClick={() => handlePointTypeFilterChange('volunteer')}
             className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
               pointTypeFilter === 'volunteer'
                 ? 'bg-[#006233] text-white shadow-xs'
@@ -266,7 +278,7 @@ export const OpportunitiesScreen: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setPointTypeFilter('learning')}
+            onClick={() => handlePointTypeFilterChange('learning')}
             className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
               pointTypeFilter === 'learning'
                 ? 'bg-[#2563eb] text-white shadow-xs'
@@ -301,7 +313,7 @@ export const OpportunitiesScreen: React.FC = () => {
               selectedWilaya={selectedWilaya}
               onSelectWilaya={handleWilayaChange}
               filterType={pointTypeFilter}
-              onFilterTypeChange={setPointTypeFilter}
+              onFilterTypeChange={handlePointTypeFilterChange}
               selectedId={selectedId}
             />
           </div>

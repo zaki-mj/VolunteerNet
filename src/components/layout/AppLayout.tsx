@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import {
   Home,
   Compass,
-  GraduationCap,
   ShieldCheck,
   Building2,
   Sun,
@@ -71,11 +70,10 @@ export const AppLayout: React.FC = () => {
   };
 
   // Shared Public Tabs in Top Navbar:
-  // 1. Home, 2. Opportunities (with Map Discovery), 3. Learn & Participate, 4. Leaderboard, 5. Verify Certificates
+  // 1. Home, 2. Opportunities & Learning (Merged), 3. Leaderboard, 4. Verify Certificates
   const publicNavTabs = [
     { to: '/', label: t('nav.home'), icon: Home },
     { to: '/opportunities', label: t('nav.opportunities'), icon: Compass },
-    { to: '/workshops', label: t('nav.workshops'), icon: GraduationCap },
     { to: '/leaderboard', label: t('nav.leaderboard'), icon: Trophy },
     { to: '/verify', label: t('nav.verify'), icon: ShieldCheck },
   ];
