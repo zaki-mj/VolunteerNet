@@ -5,16 +5,17 @@ import {
   MapPin,
   Clock,
   Search,
-  ArrowLeft,
   Map as MapIcon,
   LayoutGrid,
   Columns,
   CheckCircle2,
   Building2,
   ExternalLink,
+  HeartHandshake,
+  GraduationCap,
 } from 'lucide-react';
-import { MOCK_OPPORTUNITIES } from '../mock/data';
-import { OpportunityMap } from '../components/opportunities/OpportunityMap';
+import { MOCK_OPPORTUNITIES, MOCK_WORKSHOPS } from '../mock/data';
+import { OpportunityMap, type PointTypeFilter } from '../components/opportunities/OpportunityMap';
 
 type ViewMode = 'split' | 'map' | 'grid';
 
@@ -27,10 +28,8 @@ export const OpportunitiesScreen: React.FC = () => {
   const [viewMode, setViewMode] = useState<ViewMode>(initialView);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedWilaya, setSelectedWilaya] = useState(initialWilaya);
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedOpportunityId, setSelectedOpportunityId] = useState<string | undefined>(
-    MOCK_OPPORTUNITIES[0]?.id
-  );
+  const [pointTypeFilter, setPointTypeFilter] = useState<PointTypeFilter>('all');
+  const [selectedId, setSelectedId] = useState<string | undefined>(MOCK_OPPORTUNITIES[0]?.id);
   const [appliedId, setAppliedId] = useState<string | null>(null);
 
   // Update URL params when view or wilaya changes
@@ -52,47 +51,55 @@ export const OpportunitiesScreen: React.FC = () => {
     setSearchParams(newParams);
   };
 
-  // Categories list
-  const categories = [
-    { id: 'all', label: 'كافة المجالات' },
-    { id: 'environment', label: 'بيئة وتشجير', color: '#006233' },
-    { id: 'tech', label: 'تكنولوجيا ورقمنة', color: '#2563eb' },
-    { id: 'health', label: 'صحة وإسعاف', color: '#dc2626' },
-    { id: 'education', label: 'تعليم ومحو أمية', color: '#d97706' },
-    { id: 'culture', label: 'تراث وثقافة', color: '#7c3aed' },
-    { id: 'relief', label: 'إغاثة وتضامن', color: '#059669' },
-  ];
-
-  // List of unique Wilayas present in opportunities
+  // Unique Wilayas from both opportunities and workshops
   const availableWilayas = useMemo(() => {
-    const set = new Set(MOCK_OPPORTUNITIES.map((opp) => opp.wilaya));
+    const set = new Set<string>();
+    MOCK_OPPORTUNITIES.forEach((o) => set.add(o.wilaya));
+    MOCK_WORKSHOPS.forEach((w) => {
+      if (w.wilaya) set.add(w.wilaya);
+    });
     return Array.from(set).sort();
   }, []);
 
-  // Filtered opportunities based on search, wilaya, and category
+  // Filtered Opportunities (Volunteering)
   const filteredOpportunities = useMemo(() => {
+    if (pointTypeFilter === 'learning') return [];
+
     return MOCK_OPPORTUNITIES.filter((opp) => {
-      // Wilaya filter
-      if (selectedWilaya && opp.wilaya !== selectedWilaya) {
-        return false;
-      }
-      // Category filter
-      if (selectedCategory !== 'all' && opp.category !== selectedCategory) {
-        return false;
-      }
-      // Text Search
+      if (selectedWilaya && opp.wilaya !== selectedWilaya) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
-        const matchesTitle = opp.title.toLowerCase().includes(q);
-        const matchesNgo = opp.ngoName.toLowerCase().includes(q);
-        const matchesWilaya = opp.wilaya.toLowerCase().includes(q);
-        const matchesCommune = opp.commune.toLowerCase().includes(q);
-        const matchesDesc = opp.description.toLowerCase().includes(q);
-        return matchesTitle || matchesNgo || matchesWilaya || matchesCommune || matchesDesc;
+        return (
+          opp.title.toLowerCase().includes(q) ||
+          opp.ngoName.toLowerCase().includes(q) ||
+          opp.wilaya.toLowerCase().includes(q) ||
+          opp.commune.toLowerCase().includes(q) ||
+          opp.description.toLowerCase().includes(q)
+        );
       }
       return true;
     });
-  }, [selectedWilaya, selectedCategory, searchQuery]);
+  }, [selectedWilaya, searchQuery, pointTypeFilter]);
+
+  // Filtered Workshops (Learning)
+  const filteredWorkshops = useMemo(() => {
+    if (pointTypeFilter === 'volunteer') return [];
+
+    return MOCK_WORKSHOPS.filter((ws) => {
+      if (selectedWilaya && ws.wilaya !== selectedWilaya) return false;
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        return (
+          ws.title.toLowerCase().includes(q) ||
+          ws.organizer.toLowerCase().includes(q) ||
+          (ws.wilaya && ws.wilaya.toLowerCase().includes(q)) ||
+          ws.location.toLowerCase().includes(q) ||
+          ws.description.toLowerCase().includes(q)
+        );
+      }
+      return true;
+    });
+  }, [selectedWilaya, searchQuery, pointTypeFilter]);
 
   const handleApply = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -103,22 +110,25 @@ export const OpportunitiesScreen: React.FC = () => {
     }, 4000);
   };
 
+  const totalResultsCount = filteredOpportunities.length + filteredWorkshops.length;
+
   return (
     <div className="space-y-8 pb-16">
-      {/* 🧭 Header & Discovery Subtitle */}
+      {/* 🧭 Header with OpenStreetMap Live Discovery */}
       <div className="relative overflow-hidden rounded-3xl bg-linear-to-b from-[var(--color-primary-container)]/50 to-[var(--color-surface)] border border-[var(--color-border)] p-6 sm:p-10 space-y-4">
         <div className="max-w-3xl space-y-2">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-[var(--color-surface)] text-[var(--color-primary)] border border-[var(--color-primary)]/30 shadow-2xs">
             <Compass className="w-3.5 h-3.5" />
-            <span>خريطة ومستكشف الفرص التطوعية الوطنية</span>
+            <span>خريطة الجزائر الحية للاستكشاف الجغرافي</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl font-black text-[var(--color-text)]">
-            استكشف الفرص التطوعية الميدانية في <span className="text-[var(--color-primary)]">الجزائر</span>
+            استكشف فرص <span className="text-[var(--color-primary)]">التطوع</span> و{' '}
+            <span className="text-[#2563eb]">التعلّم</span> عبر خريطة الجزائر
           </h1>
 
           <p className="text-xs sm:text-sm text-[var(--color-text-muted)] leading-relaxed">
-            ابحث عن المبادرات حسب ولايتك، أو تصفح الخريطة التفاعلية للتعرف على احتياجات المجتمع والمقاعد الشاغرة لدى أكثر من 180 جمعية معتمدة عبر الوطن.
+            خريطة جغرافية حقيقية للجزائر (OpenStreetMap) تمكّنك من استكشاف نوعين أساسيين من المبادرات: فرص التطوع الميداني مع الجمعيات المعتمدة، وورشات التعلّم وبناء القدرات.
           </p>
         </div>
 
@@ -131,7 +141,7 @@ export const OpportunitiesScreen: React.FC = () => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="ابحث باسم المبادرة، الجمعية، البلدية أو الولاية..."
+              placeholder="ابحث باسم المبادرة، الجمعية، الولاية أو الورشة..."
               className="w-full ps-10 pe-4 py-2.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs text-[var(--color-text)] placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all shadow-2xs"
             />
             {searchQuery && (
@@ -155,7 +165,7 @@ export const OpportunitiesScreen: React.FC = () => {
               onChange={(e) => handleWilayaChange(e.target.value)}
               className="px-3 py-2 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] text-xs font-bold text-[var(--color-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-all"
             >
-              <option value="">كافة الولايات ({MOCK_OPPORTUNITIES.length} فرصة)</option>
+              <option value="">كافة الولايات ({availableWilayas.length} ولاية نشطة)</option>
               {availableWilayas.map((wilaya) => (
                 <option key={wilaya} value={wilaya}>
                   {wilaya}
@@ -207,44 +217,63 @@ export const OpportunitiesScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* 🏷️ Category Filter Badges */}
+        {/* 🌟 Simple 2-Point Type Filter Chips (Volunteering vs Learning) */}
         <div className="flex items-center gap-2 overflow-x-auto pt-2 no-scrollbar">
-          {categories.map((cat) => {
-            const isSelected = selectedCategory === cat.id;
-            const count =
-              cat.id === 'all'
-                ? MOCK_OPPORTUNITIES.length
-                : MOCK_OPPORTUNITIES.filter((o) => o.category === cat.id).length;
+          <button
+            onClick={() => setPointTypeFilter('all')}
+            className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              pointTypeFilter === 'all'
+                ? 'bg-[var(--color-surface)] text-[var(--color-text)] border-2 border-[var(--color-primary)] shadow-xs'
+                : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+            }`}
+          >
+            <span>كافة النقاط</span>
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[var(--color-surface-muted)] text-[var(--color-text-muted)]">
+              {MOCK_OPPORTUNITIES.length + MOCK_WORKSHOPS.length}
+            </span>
+          </button>
 
-            return (
-              <button
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                  isSelected
-                    ? 'bg-[var(--color-primary)] text-white shadow-xs'
-                    : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)]'
-                }`}
-              >
-                {cat.color && (
-                  <span
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: isSelected ? '#ffffff' : cat.color }}
-                  />
-                )}
-                <span>{cat.label}</span>
-                <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                    isSelected
-                      ? 'bg-white/25 text-white'
-                      : 'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)]'
-                  }`}
-                >
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+          <button
+            onClick={() => setPointTypeFilter('volunteer')}
+            className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              pointTypeFilter === 'volunteer'
+                ? 'bg-[#006233] text-white shadow-xs'
+                : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[#006233]'
+            }`}
+          >
+            <HeartHandshake className="w-3.5 h-3.5 text-emerald-500" />
+            <span>فرص التطوع الميداني</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                pointTypeFilter === 'volunteer'
+                  ? 'bg-white/20 text-white'
+                  : 'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)]'
+              }`}
+            >
+              {MOCK_OPPORTUNITIES.length}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setPointTypeFilter('learning')}
+            className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+              pointTypeFilter === 'learning'
+                ? 'bg-[#2563eb] text-white shadow-xs'
+                : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[#2563eb]'
+            }`}
+          >
+            <GraduationCap className="w-3.5 h-3.5 text-blue-500" />
+            <span>فرص التعلّم والورشات</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                pointTypeFilter === 'learning'
+                  ? 'bg-white/20 text-white'
+                  : 'bg-[var(--color-surface-muted)] text-[var(--color-text-muted)]'
+              }`}
+            >
+              {MOCK_WORKSHOPS.length}
+            </span>
+          </button>
         </div>
       </div>
 
@@ -257,19 +286,19 @@ export const OpportunitiesScreen: React.FC = () => {
           <div className="lg:col-span-7 sticky top-20">
             <OpportunityMap
               opportunities={filteredOpportunities}
+              workshops={filteredWorkshops}
               selectedWilaya={selectedWilaya}
               onSelectWilaya={handleWilayaChange}
-              selectedOpportunityId={selectedOpportunityId}
-              onSelectOpportunity={(opp) => setSelectedOpportunityId(opp.id)}
+              filterType={pointTypeFilter}
+              onFilterTypeChange={setPointTypeFilter}
+              selectedId={selectedId}
             />
           </div>
 
-          {/* Opportunities List Column (5 cols) */}
+          {/* Opportunities & Workshops List Column (5 cols) */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center justify-between text-xs font-bold text-[var(--color-text-muted)] px-1">
-              <span>
-                النتائج المتاحة ({filteredOpportunities.length} مبادرة)
-              </span>
+              <span>النتائج المتاحة ({totalResultsCount} مبادرة)</span>
               {selectedWilaya && (
                 <button
                   onClick={() => handleWilayaChange('')}
@@ -280,20 +309,20 @@ export const OpportunitiesScreen: React.FC = () => {
               )}
             </div>
 
-            {filteredOpportunities.length === 0 ? (
+            {totalResultsCount === 0 ? (
               <div className="p-8 text-center rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] space-y-3">
                 <Compass className="w-10 h-10 text-[var(--color-text-muted)] mx-auto opacity-50" />
                 <h4 className="font-bold text-sm text-[var(--color-text)]">
-                  لا توجد فرص تطوعية مطابقة
+                  لا توجد مبادرات مطابقة
                 </h4>
                 <p className="text-xs text-[var(--color-text-muted)]">
-                  جرب اختيار ولاية أخرى أو إلغاء كلمات البحث للعثور على مبادرات.
+                  جرب اختيار ولاية أخرى أو إلغاء كلمات البحث.
                 </p>
                 <button
                   onClick={() => {
                     setSearchQuery('');
                     setSelectedWilaya('');
-                    setSelectedCategory('all');
+                    setPointTypeFilter('all');
                   }}
                   className="px-4 py-2 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold"
                 >
@@ -302,15 +331,16 @@ export const OpportunitiesScreen: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-3.5 max-h-[750px] overflow-y-auto pe-1">
+                {/* 🤝 Volunteering Cards */}
                 {filteredOpportunities.map((opp) => {
-                  const isFocused = selectedOpportunityId === opp.id;
+                  const isFocused = selectedId === opp.id;
                   const spotsLeft = opp.spotsTotal - opp.spotsTaken;
                   const isApplied = appliedId === opp.id;
 
                   return (
                     <div
                       key={opp.id}
-                      onClick={() => setSelectedOpportunityId(opp.id)}
+                      onClick={() => setSelectedId(opp.id)}
                       className={`p-4 rounded-2xl border transition-all cursor-pointer ${
                         isFocused
                           ? 'border-[var(--color-primary)] bg-[var(--color-surface)] shadow-md ring-2 ring-[var(--color-primary)]/20'
@@ -318,9 +348,9 @@ export const OpportunitiesScreen: React.FC = () => {
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2 text-xs text-[var(--color-text-muted)] mb-1.5">
-                        <span className="flex items-center gap-1 font-bold text-[var(--color-primary)]">
-                          <MapPin className="w-3.5 h-3.5" />
-                          {opp.wilaya} • {opp.commune}
+                        <span className="flex items-center gap-1 font-bold text-[#006233] bg-[#e6f3ec] px-2 py-0.5 rounded-full text-[11px]">
+                          <HeartHandshake className="w-3 h-3" />
+                          تطوع • {opp.wilaya}
                         </span>
                         <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">
                           {spotsLeft} مقاعد شاغرة
@@ -347,7 +377,7 @@ export const OpportunitiesScreen: React.FC = () => {
                             to={`/opportunities/${opp.id}`}
                             onClick={(e) => e.stopPropagation()}
                             className="p-1.5 rounded-lg border border-[var(--color-border)] hover:bg-[var(--color-surface-muted)] text-[var(--color-text)] text-xs font-medium"
-                            title="عرض التفاصيل الكاملة"
+                            title="عرض التفاصيل"
                           >
                             <ExternalLink className="w-3.5 h-3.5" />
                           </Link>
@@ -370,71 +400,76 @@ export const OpportunitiesScreen: React.FC = () => {
                     </div>
                   );
                 })}
+
+                {/* 🎓 Learning / Workshop Cards */}
+                {filteredWorkshops.map((ws) => {
+                  const isFocused = selectedId === ws.id;
+                  const seatsLeft = ws.totalSeats - ws.seatsBooked;
+
+                  return (
+                    <div
+                      key={ws.id}
+                      onClick={() => setSelectedId(ws.id)}
+                      className={`p-4 rounded-2xl border transition-all cursor-pointer ${
+                        isFocused
+                          ? 'border-[#2563eb] bg-[var(--color-surface)] shadow-md ring-2 ring-blue-500/20'
+                          : 'border-[var(--color-border)] bg-[var(--color-surface)] hover:border-blue-500/50 hover:bg-[var(--color-surface-hover)] shadow-2xs'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-2 text-xs text-[var(--color-text-muted)] mb-1.5">
+                        <span className="flex items-center gap-1 font-bold text-[#1e40af] bg-[#dbeafe] px-2 py-0.5 rounded-full text-[11px]">
+                          <GraduationCap className="w-3 h-3" />
+                          ورشة وتكوين • {ws.wilaya}
+                        </span>
+                        <span className="font-mono text-blue-600 dark:text-blue-400 font-bold text-[11px]">
+                          {seatsLeft} مقاعد متاحة
+                        </span>
+                      </div>
+
+                      <h4 className="font-bold text-sm text-[var(--color-text)] leading-snug">
+                        {ws.title}
+                      </h4>
+
+                      <p className="text-xs text-[var(--color-text-muted)] mt-1 flex items-center gap-1">
+                        <Building2 className="w-3.5 h-3.5" />
+                        <span className="truncate">{ws.organizer}</span>
+                      </p>
+
+                      <div className="flex items-center justify-between pt-3 mt-3 border-t border-[var(--color-border)] gap-2">
+                        <span className="text-xs font-mono font-bold text-[#2563eb] flex items-center gap-1">
+                          <Clock className="w-3.5 h-3.5" />
+                          {ws.durationHours} ساعات تأهيل
+                        </span>
+
+                        <Link
+                          to={`/workshops/${ws.id}`}
+                          onClick={(e) => e.stopPropagation()}
+                          className="px-3 py-1.5 rounded-xl bg-[#2563eb] hover:bg-blue-700 text-white text-xs font-bold transition-all shadow-2xs"
+                        >
+                          تفاصيل الورشة
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
         </div>
       )}
 
-      {/* 2. MAP VIEW ONLY (Full Width Map with active spotlight below) */}
+      {/* 2. MAP VIEW ONLY (Full Width Leaflet Map) */}
       {viewMode === 'map' && (
         <div className="space-y-6">
           <OpportunityMap
             opportunities={filteredOpportunities}
+            workshops={filteredWorkshops}
             selectedWilaya={selectedWilaya}
             onSelectWilaya={handleWilayaChange}
-            selectedOpportunityId={selectedOpportunityId}
-            onSelectOpportunity={(opp) => setSelectedOpportunityId(opp.id)}
+            filterType={pointTypeFilter}
+            onFilterTypeChange={setPointTypeFilter}
+            selectedId={selectedId}
           />
-
-          {/* Active Wilaya Opportunities Grid Below Map */}
-          {selectedWilaya && (
-            <div className="space-y-4 pt-2">
-              <h3 className="font-extrabold text-lg text-[var(--color-text)] flex items-center gap-2">
-                <MapPin className="w-5 h-5 text-[var(--color-primary)]" />
-                <span>المبادرات النشطة في ولاية {selectedWilaya}</span>
-              </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredOpportunities.map((opp) => (
-                  <div
-                    key={opp.id}
-                    className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xs flex flex-col justify-between space-y-3"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 text-xs text-[var(--color-text-muted)] mb-1.5">
-                        <span className="font-bold text-[var(--color-primary)]">
-                          {opp.commune}
-                        </span>
-                        <span className="font-mono text-emerald-600 font-bold">
-                          {opp.spotsTotal - opp.spotsTaken} مقاعد متاحة
-                        </span>
-                      </div>
-                      <h4 className="font-bold text-sm text-[var(--color-text)]">
-                        {opp.title}
-                      </h4>
-                      <p className="text-xs text-[var(--color-text-muted)] mt-1">
-                        {opp.ngoName}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-3 border-t border-[var(--color-border)]">
-                      <span className="text-xs font-mono font-bold text-[var(--color-primary)]">
-                        {opp.hours} ساعات تطوع
-                      </span>
-                      <Link
-                        to={`/opportunities/${opp.id}`}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-[var(--color-primary)] hover:underline"
-                      >
-                        <span>التفاصيل الكاملة</span>
-                        <ArrowLeft className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       )}
 
@@ -442,84 +477,94 @@ export const OpportunitiesScreen: React.FC = () => {
       {viewMode === 'grid' && (
         <div className="space-y-6">
           <div className="flex items-center justify-between text-xs font-bold text-[var(--color-text-muted)] px-1">
-            <span>
-              عرض كافة الفرص المتاحة ({filteredOpportunities.length} مبادرة)
-            </span>
+            <span>عرض كافة المبادرات ({totalResultsCount} مبادرة)</span>
             <button
               onClick={() => handleViewModeChange('map')}
               className="inline-flex items-center gap-1 text-[var(--color-primary)] hover:underline"
             >
               <MapIcon className="w-3.5 h-3.5" />
-              <span>استعراض على الخريطة التفاعلية</span>
+              <span>استعراض على خريطة الجزائر الحية</span>
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredOpportunities.map((opp) => {
-              const spotsLeft = opp.spotsTotal - opp.spotsTaken;
-              const isApplied = appliedId === opp.id;
-
-              return (
-                <div
-                  key={opp.id}
-                  className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-primary)]/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 group"
-                >
-                  <div className="space-y-2.5">
-                    <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="inline-flex items-center gap-1 font-bold px-2.5 py-1 rounded-full bg-[var(--color-primary-container)] text-[var(--color-primary)]">
-                        <MapPin className="w-3 h-3" />
-                        {opp.wilaya} • {opp.commune}
-                      </span>
-                      <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-                        {spotsLeft} مقاعد متبقية
-                      </span>
-                    </div>
-
-                    <h4 className="font-bold text-sm text-[var(--color-text)] group-hover:text-[var(--color-primary)] transition-colors leading-snug">
-                      {opp.title}
-                    </h4>
-
-                    <p className="text-xs text-[var(--color-text-muted)] line-clamp-2 leading-relaxed">
-                      {opp.description}
-                    </p>
-
-                    <div className="text-xs text-[var(--color-text-muted)] flex items-center gap-1 pt-1">
-                      <Building2 className="w-3.5 h-3.5 text-[var(--color-primary)]" />
-                      <span className="truncate">{opp.ngoName}</span>
-                    </div>
+            {filteredOpportunities.map((opp) => (
+              <div
+                key={opp.id}
+                className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-[var(--color-primary)]/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="inline-flex items-center gap-1 font-bold px-2.5 py-1 rounded-full bg-[#e6f3ec] text-[#006233]">
+                      <HeartHandshake className="w-3 h-3" />
+                      تطوع • {opp.wilaya}
+                    </span>
+                    <span className="text-[11px] font-mono text-emerald-600 font-bold">
+                      {opp.spotsTotal - opp.spotsTaken} مقاعد شاغرة
+                    </span>
                   </div>
 
-                  <div className="pt-3 border-t border-[var(--color-border)] flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[var(--color-primary)]">
-                      <Clock className="w-3.5 h-3.5" />
-                      <span>{opp.hours} ساعات</span>
-                    </div>
+                  <h4 className="font-bold text-sm text-[var(--color-text)]">
+                    {opp.title}
+                  </h4>
 
-                    <div className="flex items-center gap-2">
-                      <Link
-                        to={`/opportunities/${opp.id}`}
-                        className="px-3 py-1.5 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-hover)] text-xs font-bold text-[var(--color-text)] transition-colors"
-                      >
-                        التفاصيل
-                      </Link>
-
-                      {isApplied ? (
-                        <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold">
-                          تم التسجيل
-                        </span>
-                      ) : (
-                        <button
-                          onClick={(e) => handleApply(opp.id, e)}
-                          className="px-3.5 py-1.5 rounded-xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-xs font-bold transition-all shadow-xs"
-                        >
-                          تطوع الآن
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                  <p className="text-xs text-[var(--color-text-muted)] line-clamp-2">
+                    {opp.description}
+                  </p>
                 </div>
-              );
-            })}
+
+                <div className="pt-3 border-t border-[var(--color-border)] flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-[var(--color-primary)]">
+                    {opp.hours} ساعات تطوع
+                  </span>
+                  <Link
+                    to={`/opportunities/${opp.id}`}
+                    className="px-3.5 py-1.5 rounded-xl bg-[var(--color-primary)] text-white text-xs font-bold"
+                  >
+                    التفاصيل
+                  </Link>
+                </div>
+              </div>
+            ))}
+
+            {filteredWorkshops.map((ws) => (
+              <div
+                key={ws.id}
+                className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] hover:border-blue-500/50 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-2.5">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="inline-flex items-center gap-1 font-bold px-2.5 py-1 rounded-full bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-300">
+                      <GraduationCap className="w-3 h-3" />
+                      ورشة وتكوين • {ws.wilaya}
+                    </span>
+                    <span className="text-[11px] font-mono text-blue-600 font-bold">
+                      {ws.totalSeats - ws.seatsBooked} مقاعد متاحة
+                    </span>
+                  </div>
+
+                  <h4 className="font-bold text-sm text-[var(--color-text)]">
+                    {ws.title}
+                  </h4>
+
+                  <p className="text-xs text-[var(--color-text-muted)] line-clamp-2">
+                    {ws.description}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-[var(--color-border)] flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-[#2563eb]">
+                    {ws.durationHours} ساعات تأهيل
+                  </span>
+                  <Link
+                    to={`/workshops/${ws.id}`}
+                    className="px-3.5 py-1.5 rounded-xl bg-[#2563eb] text-white text-xs font-bold"
+                  >
+                    تفاصيل الورشة
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}

@@ -40,8 +40,10 @@ export interface Opportunity {
   status: 'open' | 'in_progress' | 'completed';
   featured?: boolean;
   mapCoordinates?: {
-    x: number; // percentage 0-100 on map
-    y: number; // percentage 0-100 on map
+    x?: number;
+    y?: number;
+    lat: number;
+    lng: number;
   };
 }
 
@@ -61,6 +63,10 @@ export interface Workshop {
   learningOutcomes: string[];
   accreditedBy: string;
   badgeTag: string;
+  wilaya: string;
+  commune: string;
+  lat: number;
+  lng: number;
 }
 
 export interface CertificateRecord {
@@ -255,7 +261,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     benefits: ['شهادة تطوع رقمية معتمدة برمز QR', 'توفير وجبة غداء ونقل مجاني من مقر الولاية', 'تغطية تأمينية خلال الفعالية'],
     status: 'open',
     featured: true,
-    mapCoordinates: { x: 53, y: 31 },
+    mapCoordinates: { x: 53, y: 31 , lat: 34.3512, lng: 3.2201 },
   },
   {
     id: 'opp-2',
@@ -276,7 +282,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     benefits: ['اعتماد تطوع تكنولوجي معترف به', 'توصية مهنية للأكاديميات التقنية', 'شهادة ساعات عمل مدني'],
     status: 'open',
     featured: true,
-    mapCoordinates: { x: 38, y: 18 },
+    mapCoordinates: { x: 38, y: 18 , lat: 35.6987, lng: -0.6349 },
   },
   {
     id: 'opp-3',
@@ -297,7 +303,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     benefits: ['احتساب 6 ساعات تطوعية مباشرة في ملفك', 'سترة ميدانية رسمية للمتطوع', 'وجبة إفطار وغداء خفيفة'],
     status: 'open',
     featured: true,
-    mapCoordinates: { x: 55, y: 15 },
+    mapCoordinates: { x: 55, y: 15 , lat: 36.7538, lng: 3.0588 },
   },
   {
     id: 'opp-4',
@@ -317,7 +323,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     requirements: ['الصبر والقدرة على التواصل البناء', 'التمكن من استخدام الهواتف الذكية والتطبيقات البنكية الحكومية'],
     benefits: ['شهادة خدمة مجتمعية رفيعة', 'تثمين الخبرة الإنسانية'],
     status: 'open',
-    mapCoordinates: { x: 70, y: 18 },
+    mapCoordinates: { x: 70, y: 18 , lat: 36.365, lng: 6.6147 },
   },
   {
     id: 'opp-5',
@@ -337,7 +343,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     requirements: ['القدرة على العمل اليدوي في البيئة الواحاتية', 'احترام القوانين العرفية للمنطقة'],
     benefits: ['شهادة حفظ التراث الوطني الجزائري', 'زيارة استكشافية مجانية لمعالم القصر'],
     status: 'open',
-    mapCoordinates: { x: 57, y: 44 },
+    mapCoordinates: { x: 57, y: 44 , lat: 32.4812, lng: 3.6821 },
   },
   {
     id: 'opp-6',
@@ -358,7 +364,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     benefits: ['شهادة عمل إنساني وإغاثة ميدانية', 'تأمين كامل ومرافقة لوجستية'],
     status: 'open',
     featured: true,
-    mapCoordinates: { x: 66, y: 19 },
+    mapCoordinates: { x: 66, y: 19 , lat: 36.4911, lng: 5.5342 },
   },
   {
     id: 'opp-7',
@@ -378,7 +384,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     requirements: ['الشغف بالبيئة البحرية', 'الالتزام بإرشادات خبراء الأحياء البحرية'],
     benefits: ['شهادة متطوع بيئي بحري', 'ورشة مجانية في علم الأحياء البحرية'],
     status: 'open',
-    mapCoordinates: { x: 79, y: 15 },
+    mapCoordinates: { x: 79, y: 15 , lat: 36.9587, lng: 7.6621 },
   },
   {
     id: 'opp-8',
@@ -398,7 +404,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     requirements: ['دقة الملاحظة والتعامل الحذر مع المواد التاريخية', 'معرفة أولية باستخدام الماسحات الضوئية'],
     benefits: ['شهادة مساهمة في الأرشيف والتراث الوطني', 'بطاقة دخول شرفية للمتاحف الوطنية'],
     status: 'open',
-    mapCoordinates: { x: 33, y: 22 },
+    mapCoordinates: { x: 33, y: 22 , lat: 34.8828, lng: -1.3167 },
   },
   {
     id: 'opp-9',
@@ -418,7 +424,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     requirements: ['تحمل أجواء العمل الصحراوي', 'العمل الجماعي وروح المبادرة'],
     benefits: ['شهادة عمل مناخي معتمدة', 'إقامة وضيافة صحراوية أصيلة طيلة فترة المبادرة'],
     status: 'open',
-    mapCoordinates: { x: 68, y: 49 },
+    mapCoordinates: { x: 68, y: 49 , lat: 32.0123, lng: 5.4612 },
   },
   {
     id: 'opp-10',
@@ -438,7 +444,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     requirements: ['القدرة على تبسيط المفاهيم للأطفال', 'حب السفر والتبادل الثقافي'],
     benefits: ['اعتماد مدرب تقني متطوع', 'جولة سياحية بيئية في واحات النخيل والكثبان'],
     status: 'open',
-    mapCoordinates: { x: 30, y: 46 },
+    mapCoordinates: { x: 30, y: 46 , lat: 30.9167, lng: -2.0333 },
   },
   {
     id: 'opp-11',
@@ -458,7 +464,7 @@ export const MOCK_OPPORTUNITIES: Opportunity[] = [
     requirements: ['اللياقة البدنية للمشي في المنحدرات الجبلية', 'احترام الحياة البرية'],
     benefits: ['شهادة حامي الطبيعة والبيئة', 'وجبة غذاء جبلية تقليدية للمتطوعين'],
     status: 'open',
-    mapCoordinates: { x: 61, y: 15 },
+    mapCoordinates: { x: 61, y: 15 , lat: 36.7621, lng: 5.0934 },
   },
 ];
 
@@ -484,6 +490,10 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     ],
     accreditedBy: 'الهلال الأحمر الجزائري + وزارة الصحة',
     badgeTag: 'شهادة رسمية موثقة',
+    wilaya: 'الجزائر العاصمة',
+    commune: 'بن عكنون',
+    lat: 36.7620,
+    lng: 3.0180,
   },
   {
     id: 'digital-leadership',
@@ -505,6 +515,10 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     ],
     accreditedBy: 'المرصد الوطني للمجتمع المدني',
     badgeTag: 'تأهيل قيادي',
+    wilaya: 'وهران',
+    commune: 'وهران المركز',
+    lat: 35.7050,
+    lng: -0.6200,
   },
   {
     id: 'gis-forestry',
@@ -526,6 +540,60 @@ export const MOCK_WORKSHOPS: Workshop[] = [
     ],
     accreditedBy: 'المحافظة السامية للغابات',
     badgeTag: 'مهارة تخصصية',
+    wilaya: 'الجلفة',
+    commune: 'عين الإبل',
+    lat: 34.6850,
+    lng: 3.2650,
+  },
+  {
+    id: 'heritage-restoration',
+    title: 'ورشة حفظ وترميم المخطوطات والوثائق التاريخية الجزائرية',
+    organizer: 'جمعية إقرأ + مديرية الثقافة',
+    partnerNgoId: 'ngo-4',
+    category: 'تراث وتوثيق',
+    durationHours: 12,
+    days: 2,
+    totalSeats: 30,
+    seatsBooked: 22,
+    startDate: '2026-12-14',
+    location: 'قصر أحمد باي - قسنطينة',
+    wilaya: 'قسنطينة',
+    commune: 'قسنطينة المركز',
+    lat: 36.3620,
+    lng: 6.6110,
+    description: 'تدريب تطبيقي على تقنيات ترميم الورق القديم، التجليد الفني، والمسح الرقمي عالي الدقة لحماية التراث الوطني.',
+    learningOutcomes: [
+      'أساسيات المعالجة الكيميائية لورق المخطوطات',
+      'التصوير الرقمي الميكروفيلمي والفهرسة الأكاديمية',
+      'شهادة معتمدة في حفظ الأرشيف الوطني',
+    ],
+    accreditedBy: 'وزارة الثقافة والفنون',
+    badgeTag: 'تراث وطني',
+  },
+  {
+    id: 'solar-energy',
+    title: 'تركيب وصيانة أنظمة الطاقة الشمسية لضخ مياه الواحات',
+    organizer: 'جمعية حماية التراث وواحات الجنوب',
+    partnerNgoId: 'ngo-6',
+    category: 'طاقة وبيئة',
+    durationHours: 14,
+    days: 3,
+    totalSeats: 25,
+    seatsBooked: 18,
+    startDate: '2026-12-20',
+    location: 'معهد الطاقات المتجددة - ورقلة',
+    wilaya: 'ورقلة',
+    commune: 'ورقلة المركز',
+    lat: 31.9550,
+    lng: 5.3350,
+    description: 'ورشة تقنية موجهة لشباب الجنوب لتمكينهم من صيانة مضخات الطاقة الشمسية لدعم الفلاحين وحماية نخيل الواحات.',
+    learningOutcomes: [
+      'حساب استطاعة الألواح الشمسية والمحولات',
+      'صيانة دورات الضخ الغاطسة في الآبار الارتوازية',
+      'شهادة تقني مساعد في الطاقة الشمسية',
+    ],
+    accreditedBy: 'مركز تنمية الطاقات المتجددة CDER',
+    badgeTag: 'طاقة نظيفة',
   },
 ];
 
