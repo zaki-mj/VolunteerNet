@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Home,
   Compass,
+  Camera,
   ShieldCheck,
   Building2,
   Sun,
@@ -444,6 +445,22 @@ export const AppLayout: React.FC = () => {
                       </NavLink>
                     </>
                   )}
+
+                  {/* Past Events Archive Quick Link */}
+                  <NavLink
+                    to="/opportunities?status=past"
+                    onClick={() => setHamburgerOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2.5 p-2.5 rounded-xl text-xs font-bold transition-colors ${
+                        isActive
+                          ? 'bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-200'
+                          : 'hover:bg-[var(--color-surface-hover)] text-amber-800 dark:text-amber-300 font-bold'
+                      }`
+                    }
+                  >
+                    <Camera className="w-4 h-4 text-amber-600" />
+                    <span>أرشيف الفعاليات السابقة 📸</span>
+                  </NavLink>
 
                   {/* Profile Section */}
                   <NavLink

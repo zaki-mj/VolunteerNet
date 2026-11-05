@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Compass,
+  Camera,
   ShieldCheck,
   Building2,
   Clock,
@@ -104,6 +105,14 @@ export const HomeScreen: React.FC = () => {
               >
                 <Trophy className="w-3.5 h-3.5 text-amber-500" />
                 <span>لوحة الشرف الوطنية</span>
+              </Link>
+
+              <Link
+                to="/opportunities?status=past"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-800 dark:text-amber-200 text-xs font-bold transition-all shadow-2xs"
+              >
+                <Camera className="w-3.5 h-3.5 text-amber-600" />
+                <span>أرشيف الفعاليات السابقة 📸</span>
               </Link>
 
               <Link

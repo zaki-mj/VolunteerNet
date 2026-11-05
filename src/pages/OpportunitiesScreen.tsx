@@ -7,6 +7,7 @@ import {
   Search,
   Map as MapIcon,
   LayoutGrid,
+  Camera,
   Columns,
   CheckCircle2,
   Building2,
@@ -41,6 +42,20 @@ export const OpportunitiesScreen: React.FC = () => {
   const [selectedWilaya, setSelectedWilaya] = useState(initialWilaya);
   const initialType = (searchParams.get('type') as PointTypeFilter) || 'all';
   const [pointTypeFilter, setPointTypeFilter] = useState<PointTypeFilter>(initialType);
+
+  const initialStatus = (searchParams.get('status') as 'all' | 'active' | 'past') || 'all';
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'past'>(initialStatus);
+
+  const handleStatusFilterChange = (status: 'all' | 'active' | 'past') => {
+    setStatusFilter(status);
+    const newParams = new URLSearchParams(searchParams);
+    if (status !== 'all') {
+      newParams.set('status', status);
+    } else {
+      newParams.delete('status');
+    }
+    setSearchParams(newParams);
+  };
 
   const handlePointTypeFilterChange = (type: PointTypeFilter) => {
     setPointTypeFilter(type);
@@ -89,6 +104,10 @@ export const OpportunitiesScreen: React.FC = () => {
     if (pointTypeFilter === 'learning') return [];
 
     return opportunities.filter((opp) => {
+      // Status filter: active vs past
+      if (statusFilter === 'active' && (opp.status === 'completed' || opp.isPast)) return false;
+      if (statusFilter === 'past' && opp.status !== 'completed' && !opp.isPast) return false;
+
       if (selectedWilaya && opp.wilaya !== selectedWilaya) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -97,18 +116,23 @@ export const OpportunitiesScreen: React.FC = () => {
           opp.ngoName.toLowerCase().includes(q) ||
           opp.wilaya.toLowerCase().includes(q) ||
           opp.commune.toLowerCase().includes(q) ||
-          opp.description.toLowerCase().includes(q)
+          opp.description.toLowerCase().includes(q) ||
+          (opp.mentors && opp.mentors.some((m) => m.toLowerCase().includes(q)))
         );
       }
       return true;
     });
-  }, [selectedWilaya, searchQuery, pointTypeFilter]);
+  }, [selectedWilaya, searchQuery, pointTypeFilter, statusFilter, opportunities]);
 
   // Filtered Workshops (Learning)
   const filteredWorkshops = useMemo(() => {
     if (pointTypeFilter === 'volunteer') return [];
 
     return workshops.filter((ws) => {
+      // Status filter: active vs past
+      if (statusFilter === 'active' && ws.isPast) return false;
+      if (statusFilter === 'past' && !ws.isPast) return false;
+
       if (selectedWilaya && ws.wilaya !== selectedWilaya) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -117,12 +141,13 @@ export const OpportunitiesScreen: React.FC = () => {
           ws.organizer.toLowerCase().includes(q) ||
           (ws.wilaya && ws.wilaya.toLowerCase().includes(q)) ||
           ws.location.toLowerCase().includes(q) ||
-          ws.description.toLowerCase().includes(q)
+          ws.description.toLowerCase().includes(q) ||
+          (ws.mentors && ws.mentors.some((m) => m.toLowerCase().includes(q)))
         );
       }
       return true;
     });
-  }, [selectedWilaya, searchQuery, pointTypeFilter]);
+  }, [selectedWilaya, searchQuery, pointTypeFilter, statusFilter, workshops]);
 
   const handleApply = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -240,8 +265,66 @@ export const OpportunitiesScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* 🌟 Simple 2-Point Type Filter Chips (Volunteering vs Learning) */}
-        <div className="flex items-center gap-2 overflow-x-auto pt-2 no-scrollbar">
+        {/* 🌟 Status / Timeline Filter Bar (All vs Open vs Past Events Archive) */}
+        <div className="pt-3 border-t border-[var(--color-border)]/60 flex flex-wrap items-center justify-between gap-3">
+          {/* Timeline Status Segmented Switcher */}
+          <div className="flex items-center bg-[var(--color-surface-muted)] p-1 rounded-2xl border border-[var(--color-border)] text-xs font-bold shrink-0">
+            <button
+              onClick={() => handleStatusFilterChange('all')}
+              className={`px-3.5 py-1.5 rounded-xl transition-all ${
+                statusFilter === 'all'
+                  ? 'bg-[var(--color-surface)] text-[var(--color-text)] shadow-xs font-black'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+              }`}
+            >
+              كافة المبادرات
+            </button>
+
+            <button
+              onClick={() => handleStatusFilterChange('active')}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all ${
+                statusFilter === 'active'
+                  ? 'bg-[var(--color-surface)] text-emerald-600 shadow-xs font-black'
+                  : 'text-[var(--color-text-muted)] hover:text-emerald-600'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>المفتوحة للتسجيل</span>
+            </button>
+
+            <button
+              onClick={() => handleStatusFilterChange('past')}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl transition-all ${
+                statusFilter === 'past'
+                  ? 'bg-amber-500 text-white shadow-xs font-black'
+                  : 'text-amber-800 dark:text-amber-300 hover:text-amber-600 font-bold'
+              }`}
+            >
+              <Camera className="w-3.5 h-3.5" />
+              <span>أرشيف الفعاليات السابقة 📸</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                  statusFilter === 'past'
+                    ? 'bg-white/25 text-white'
+                    : 'bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300'
+                }`}
+              >
+                منجزة
+              </span>
+            </button>
+          </div>
+
+          <span className="text-xs text-[var(--color-text-muted)] font-medium">
+            {statusFilter === 'past'
+              ? '📸 تعرض الفعاليات والورشات المكتملة مع ألبوم الصور الميدانية'
+              : statusFilter === 'active'
+              ? '🟢 تعرض الفرص الحالية المتاحة للانضمام والتطوع الفوري'
+              : 'استكشاف شامل للفرص المفتوحة والفعاليات المنجزة'}
+          </span>
+        </div>
+
+        {/* 🌟 Type Filter Chips (Volunteering vs Learning) */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-1 no-scrollbar">
           <button
             onClick={() => handlePointTypeFilterChange('all')}
             className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
@@ -299,6 +382,38 @@ export const OpportunitiesScreen: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {statusFilter === 'past' && (
+        <div className="p-5 rounded-3xl bg-linear-to-r from-amber-50 via-orange-50 to-amber-50 dark:from-amber-950/40 dark:via-orange-950/30 dark:to-amber-950/40 border-2 border-amber-300 dark:border-amber-700 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
+              <Camera className="w-6 h-6" />
+            </div>
+            <div className="space-y-0.5">
+              <div className="flex items-center gap-2">
+                <h3 className="font-black text-base text-amber-950 dark:text-amber-100">
+                  أرشيف الفعاليات الميدانية والورشات السابقة 📸
+                </h3>
+                <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-200/80 dark:bg-amber-900/80 text-amber-900 dark:text-amber-200">
+                  توثيق رسمي
+                </span>
+              </div>
+              <p className="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
+                سجل الأنشطة والورشات الميدانية التي أقيمت بنجاح في ولايات الوطن (مثل ورشة سكراتش بدار الشباب سبدو)، موثقة بالصور الحية، تقارير الأثر، وقائمة المؤطرين المتطوعين والشهادات الصادرة.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0 self-end md:self-auto">
+            <button
+              onClick={() => handleStatusFilterChange('all')}
+              className="px-3.5 py-2 rounded-xl border border-amber-300 dark:border-amber-700 bg-[var(--color-surface)] hover:bg-amber-100 dark:hover:bg-amber-900/40 text-amber-900 dark:text-amber-100 text-xs font-bold transition-all shadow-2xs"
+            >
+              عرض كافة المبادرات
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 🎯 MAIN VIEWPORTS */}
 
