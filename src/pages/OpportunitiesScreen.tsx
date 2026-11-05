@@ -375,11 +375,29 @@ export const OpportunitiesScreen: React.FC = () => {
                           <HeartHandshake className="w-3 h-3" />
                           تطوع • {opp.wilaya}
                         </span>
-                        <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">
-                          {spotsLeft} مقاعد شاغرة
-                        </span>
+                        {opp.isPast ? (
+                          <span className="font-bold text-[11px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                            منتهية (Past) • 29/10/2026
+                          </span>
+                        ) : (
+                          <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold text-[11px]">
+                            {spotsLeft} مقاعد شاغرة
+                          </span>
+                        )}
                       </div>
 
+                      {opp.images && opp.images[1] && (
+                        <div className="my-2 h-28 rounded-xl overflow-hidden border border-[var(--color-border)] relative group">
+                          <img
+                            src={opp.images[1]}
+                            alt={opp.title}
+                            className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                          />
+                          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-[10px] font-bold backdrop-blur-xs">
+                            صور حية من سبدو 📸
+                          </div>
+                        </div>
+                      )}
                       <h4 className="font-bold text-sm text-[var(--color-text)] leading-snug">
                         {opp.title}
                       </h4>
@@ -405,7 +423,15 @@ export const OpportunitiesScreen: React.FC = () => {
                             <ExternalLink className="w-3.5 h-3.5" />
                           </Link>
 
-                          {isApplied ? (
+                          {opp.isPast ? (
+                            <Link
+                              to={`/opportunities/${opp.id}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold transition-all shadow-2xs"
+                            >
+                              معاينة الصور والتقرير
+                            </Link>
+                          ) : isApplied ? (
                             <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold animate-in fade-in">
                               <CheckCircle2 className="w-3.5 h-3.5" />
                               <span>تم التسجيل</span>

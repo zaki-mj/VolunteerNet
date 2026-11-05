@@ -141,6 +141,56 @@ export const OpportunityDetailScreen: React.FC = () => {
           </p>
         </div>
 
+        {/* Event Photos Gallery */}
+        {opportunity.images && opportunity.images.length > 0 && (
+          <div className="space-y-3 pt-2">
+            <h3 className="font-bold text-sm text-[var(--color-text)] flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>معرض صور الفعالية الميدانية (دار الشباب سبدو)</span>
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-sky-50 dark:bg-sky-950/30 aspect-video flex items-center justify-center p-6 shadow-xs">
+                <img
+                  src={opportunity.images[0]}
+                  alt="شعار ورشة سكراتش"
+                  className="max-h-full object-contain drop-shadow-sm"
+                />
+              </div>
+              <div className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-black/5 aspect-video relative group shadow-xs">
+                <img
+                  src={opportunity.images[1]}
+                  alt="أطفال يبرمجون بدار الشباب سبدو"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-3 text-white text-xs font-semibold">
+                  <span>ورشة سكراتش للأطفال بدار الشباب سبدو (29 أكتوبر 2026)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Mentors List */}
+        {opportunity.mentors && opportunity.mentors.length > 0 && (
+          <div className="p-4 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface-muted)] space-y-2.5">
+            <h4 className="font-bold text-xs text-[var(--color-text)] flex items-center gap-1.5">
+              <Users className="w-4 h-4 text-[var(--color-primary)]" />
+              <span>المؤطرون والمدربون المعتمدون للورشة:</span>
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {opportunity.mentors.map((mentor, idx) => (
+                <span
+                  key={idx}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-bold text-[var(--color-text)] shadow-2xs"
+                >
+                  <span className="w-2 h-2 rounded-full bg-[var(--color-primary)]" />
+                  <span>{mentor}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Requirements & Benefits Grids */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
           {/* Requirements */}
@@ -178,7 +228,20 @@ export const OpportunityDetailScreen: React.FC = () => {
 
         {/* Action CTAs */}
         <div className="pt-4 border-t border-[var(--color-border)] flex flex-wrap items-center justify-between gap-3">
-          {applied ? (
+          {opportunity.isPast ? (
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div className="flex items-center gap-2 p-3 rounded-2xl bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 text-xs font-bold border border-amber-200 dark:border-amber-800">
+                <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>هذه الفعالية أقيمت بنجاح في 29 أكتوبر 2026 وتم تسليم شهادات المشاركة والتأطير.</span>
+              </div>
+              <Link
+                to="/verify?id=CERT-DZ-2026-SEBDOU-01"
+                className="px-4 py-3 rounded-2xl bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white text-xs font-bold text-center transition-all shadow-xs"
+              >
+                معاينة نموذج الشهادة المعتمدة
+              </Link>
+            </div>
+          ) : applied ? (
             <div className="flex items-center gap-2 p-3 rounded-2xl bg-emerald-100 text-emerald-900 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold animate-in fade-in">
               <CheckCircle2 className="w-5 h-5 text-emerald-600" />
               <span>

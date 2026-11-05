@@ -39,6 +39,9 @@ export interface Opportunity {
   benefits: string[];
   status: 'open' | 'in_progress' | 'completed';
   featured?: boolean;
+  images?: string[];
+  isPast?: boolean;
+  mentors?: string[];
   mapCoordinates?: {
     x?: number;
     y?: number;
@@ -67,6 +70,9 @@ export interface Workshop {
   commune: string;
   lat: number;
   lng: number;
+  images?: string[];
+  isPast?: boolean;
+  mentors?: string[];
 }
 
 export interface CertificateRecord {
@@ -724,47 +730,47 @@ export interface NgoLeaderboardEntry {
 export const MOCK_VOLUNTEER_LEADERBOARD: VolunteerLeaderboardEntry[] = [
   {
     id: 'vol-1',
-    name: 'أمين بن علي',
-    wilaya: 'الجزائر العاصمة',
-    avatarInitials: 'أب',
-    contributingHours: 168,
-    teachingHours: 84,
-    learningHours: 60,
-    badgesCount: 8,
-    featuredBadge: 'قائد ميداني متميز',
+    name: 'مجدوب محمد زكرياء',
+    wilaya: 'تلمسان',
+    avatarInitials: 'مز',
+    contributingHours: 195,
+    teachingHours: 120,
+    learningHours: 45,
+    badgesCount: 9,
+    featuredBadge: 'مؤطر ورشة سكراتش - دار الشباب سبدو',
   },
   {
     id: 'vol-2',
-    name: 'مريم سعداوي',
-    wilaya: 'وهران',
-    avatarInitials: 'مس',
-    contributingHours: 167,
-    teachingHours: 36,
-    learningHours: 35,
+    name: 'شاوي عبد الصمد',
+    wilaya: 'تلمسان',
+    avatarInitials: 'شع',
+    contributingHours: 182,
+    teachingHours: 105,
+    learningHours: 40,
     badgesCount: 8,
-    featuredBadge: 'مدربة برمجة وذكاء اصطناعي',
+    featuredBadge: 'مؤطر تفكير حاسوبي وبرمجة - سبدو',
   },
   {
     id: 'vol-3',
-    name: 'فاروق بوزيد',
-    wilaya: 'الجلفة',
-    avatarInitials: 'فب',
-    contributingHours: 166,
-    teachingHours: 35,
-    learningHours: 59,
+    name: 'مير انس',
+    wilaya: 'تلمسان',
+    avatarInitials: 'ما',
+    contributingHours: 174,
+    teachingHours: 95,
+    learningHours: 38,
     badgesCount: 8,
-    featuredBadge: 'بطل حزام السد الأخضر',
+    featuredBadge: 'مؤطر تقني وتفاعل رقمي - سبدو',
   },
   {
     id: 'vol-4',
-    name: 'فاطمة الزهراء بن عيسى',
-    wilaya: 'قسنطينة',
-    avatarInitials: 'فب',
-    contributingHours: 164,
-    teachingHours: 82,
-    learningHours: 34,
+    name: 'بن معمر الياس',
+    wilaya: 'تلمسان',
+    avatarInitials: 'بي',
+    contributingHours: 168,
+    teachingHours: 88,
+    learningHours: 35,
     badgesCount: 7,
-    featuredBadge: 'سفيرة التعلّم والتمكين',
+    featuredBadge: 'منسق لوجستي وإعلامي - سبدو',
   },
   {
     id: 'vol-5',
