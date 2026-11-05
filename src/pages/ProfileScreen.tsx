@@ -1,3 +1,4 @@
+import { UserAvatar } from '../components/common/UserAvatar';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -190,7 +191,7 @@ export const ProfileScreen: React.FC = () => {
                   ) : role === 'ngo' ? (
                     <Building2 className="w-16 h-16 text-emerald-200" />
                   ) : (
-                    <span>أب</span>
+                    <UserAvatar name={user.name} gender="male" className="w-full h-full" />
                   )}
                 </div>
               </div>

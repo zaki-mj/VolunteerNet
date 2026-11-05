@@ -1,3 +1,4 @@
+import { UserAvatar } from '../components/common/UserAvatar';
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -219,8 +220,8 @@ export const LeaderboardScreen: React.FC = () => {
                       className={`relative rounded-3xl border-2 p-5 text-center flex flex-col items-center justify-between gap-3 transition-transform ${color}`}
                     >
                       <span className="text-3xl filter drop-shadow-sm">{badge}</span>
-                      <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary)] text-white flex items-center justify-center font-black text-xl shadow-sm">
-                        {entry.avatarInitials}
+                      <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-md border-2 border-white/40 ring-2 ring-[var(--color-primary)]/20">
+                        <UserAvatar name={entry.name} className="w-full h-full" />
                       </div>
 
                       <div className="space-y-1">
@@ -341,8 +342,8 @@ export const LeaderboardScreen: React.FC = () => {
                       </td>
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-lg bg-[var(--color-primary-container)] text-[var(--color-primary)] flex items-center justify-center font-bold text-xs shrink-0">
-                            {vol.avatarInitials}
+                          <div className="w-8 h-8 rounded-xl overflow-hidden border border-[var(--color-border)] shadow-2xs shrink-0">
+                            <UserAvatar name={vol.name} className="w-full h-full" />
                           </div>
                           <div>
                             <span className="font-bold text-[var(--color-text)] block">{vol.name}</span>

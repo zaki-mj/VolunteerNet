@@ -1,3 +1,4 @@
+import { UserAvatar } from '../common/UserAvatar';
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -151,7 +152,7 @@ export const AppLayout: React.FC = () => {
                   ) : role === 'ngo' ? (
                     <Building2 className="w-4 h-4" />
                   ) : (
-                    <User className="w-4 h-4" />
+                    <UserAvatar name={user.name} gender="male" className="w-full h-full" />
                   )}
                 </div>
 
@@ -254,7 +255,7 @@ export const AppLayout: React.FC = () => {
                     ) : role === 'ngo' ? (
                       <Building2 className="w-6 h-6" />
                     ) : (
-                      <User className="w-6 h-6" />
+                      <UserAvatar name={user.name} gender="male" className="w-full h-full rounded-2xl" />
                     )}
                   </div>
 
