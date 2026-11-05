@@ -132,33 +132,28 @@ export const HomeScreen: React.FC = () => {
       </section>
 
       {/* 2. Live Impact Stats */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <section className="grid grid-cols-2 max-w-xl mx-auto gap-4">
         {[
-          { label: 'ساعة تطوعية معتمدة', value: `${PLATFORM_STATS.totalHours.toLocaleString('ar-DZ')}+`, icon: Clock, color: 'text-[var(--color-primary)]' },
-          { label: 'متطوع شاب نشط', value: `${PLATFORM_STATS.activeVolunteers.toLocaleString('ar-DZ')}+`, icon: Users, color: 'text-[var(--color-primary)]' },
-          { label: 'جمعية معتمدة رسمياً', value: `${PLATFORM_STATS.accreditedNgos}+`, icon: Building2, color: 'text-[var(--color-secondary)]' },
-          { label: 'ولاية مغطاة ميدانياً', value: '58 / 58', icon: MapPin, color: 'text-[var(--color-primary)]' },
-        ].map((stat, idx) => {
-          const Icon = stat.icon;
-          return (
-            <div
-              key={idx}
-              className="p-5 rounded-2xl bg-[var(--color-surface)] border border-[var(--color-border)] shadow-xs flex items-center gap-4 hover:border-[var(--color-primary)] transition-all"
-            >
-              <div className="p-3 rounded-xl bg-[var(--color-surface-muted)] text-[var(--color-primary)] shrink-0">
-                <Icon className="w-6 h-6" />
+          { label: 'متطوع مسجل نشط', value: `${PLATFORM_STATS.activeVolunteers.toLocaleString('ar-DZ')}`, icon: Users, color: 'text-[var(--color-primary)]' },
+          { label: 'جمعيات معتمدة رسمياً', value: `${PLATFORM_STATS.accreditedNgos.toLocaleString('ar-DZ')}`, icon: Building2, color: 'text-[var(--color-secondary)]' },
+        ].map((stat, i) => (
+          <div
+            key={i}
+            className="p-5 rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xs flex items-center justify-between text-right"
+          >
+            <div>
+              <div className="font-mono text-3xl font-black text-[var(--color-text)]">
+                {stat.value}
               </div>
-              <div>
-                <span className={`text-2xl sm:text-3xl font-black font-mono tracking-tight block ${stat.color}`}>
-                  {stat.value}
-                </span>
-                <span className="text-xs text-[var(--color-text-muted)] font-medium block">
-                  {stat.label}
-                </span>
+              <div className="text-xs font-semibold text-[var(--color-text-muted)] mt-1">
+                {stat.label}
               </div>
             </div>
-          );
-        })}
+            <div className={`p-3 rounded-xl bg-[var(--color-primary-container)]/50 ${stat.color}`}>
+              <stat.icon className="w-6 h-6" />
+            </div>
+          </div>
+        ))}
       </section>
 
       {/* 3. Featured Opportunities Showcase */}
