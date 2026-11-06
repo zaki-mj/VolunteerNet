@@ -16,6 +16,7 @@ import { AuthScreen } from './pages/AuthScreen';
 import { ProfileScreen } from './pages/ProfileScreen';
 import { LeaderboardScreen } from './pages/LeaderboardScreen';
 import { AddOpportunityScreen } from './pages/AddOpportunityScreen';
+import { SuggestWorkshopScreen } from './pages/SuggestWorkshopScreen';
 
 export const App: React.FC = () => {
   return (
@@ -27,6 +28,8 @@ export const App: React.FC = () => {
           <Route path="opportunities/new" element={<AddOpportunityScreen />} />
           <Route path="opportunities/:id" element={<OpportunityDetailScreen />} />
           <Route path="ngo/opportunities/new" element={<AddOpportunityScreen />} />
+          <Route path="suggest-workshop" element={<SuggestWorkshopScreen />} />
+          <Route path="propose-workshop" element={<Navigate to="/suggest-workshop" replace />} />
           <Route path="workshops" element={<Navigate to="/opportunities?type=learning" replace />} />
           <Route path="workshops/:id" element={<WorkshopDetailScreen />} />
           <Route path="leaderboard" element={<LeaderboardScreen />} />

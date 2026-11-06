@@ -22,6 +22,7 @@ import {
   PlusCircle,
   Users,
   Globe,
+  Lightbulb,
 } from 'lucide-react';
 import { useTheme } from '../../theme/ThemeProvider';
 import { useAuth, type UserRole } from '../../context/AuthContext';
@@ -365,6 +366,21 @@ export const AppLayout: React.FC = () => {
                         <Award className="w-4 h-4 text-[var(--color-primary)]" />
                         <span>{t('menu.my_certificates')}</span>
                       </NavLink>
+
+                      <NavLink
+                        to="/suggest-workshop"
+                        onClick={() => setHamburgerOpen(false)}
+                        className={({ isActive }) =>
+                          `flex items-center gap-2.5 p-2.5 rounded-xl text-xs font-bold transition-colors ${
+                            isActive
+                              ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-200'
+                              : 'hover:bg-[var(--color-surface-hover)] text-[var(--color-text)]'
+                          }`
+                        }
+                      >
+                        <Lightbulb className="w-4 h-4 text-amber-500" />
+                        <span>اقترح ورشة تدريبية لدار شباب</span>
+                      </NavLink>
                     </>
                   )}
 
@@ -399,6 +415,21 @@ export const AppLayout: React.FC = () => {
                       >
                         <Users className="w-4 h-4 text-[var(--color-primary)]" />
                         <span>{t('menu.manage_applicants')}</span>
+                      </NavLink>
+
+                      <NavLink
+                        to="/ngo/dashboard?tab=proposals"
+                        onClick={() => setHamburgerOpen(false)}
+                        className={({ isActive }) =>
+                          `flex items-center gap-2.5 p-2.5 rounded-xl text-xs font-bold transition-colors ${
+                            isActive
+                              ? 'bg-[var(--color-primary-container)] text-[var(--color-primary)]'
+                              : 'hover:bg-[var(--color-surface-hover)] text-[var(--color-text)]'
+                          }`
+                        }
+                      >
+                        <Lightbulb className="w-4 h-4 text-amber-500" />
+                        <span>مقترحات الورشات الواردة</span>
                       </NavLink>
                     </>
                   )}

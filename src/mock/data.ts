@@ -99,6 +99,27 @@ export interface CertificateRecord {
 
 export const MOCK_NGOS: Ngo[] = [
   {
+    id: 'ngo-sebdou-youth',
+    name: 'دار الشباب الجيلالي اليابس سبدو',
+    licenseNumber: 'MJS-DZ-13-SEBDOU-02',
+    wilaya: 'تلمسان',
+    category: 'تأطير شباني وتكوين رقمي',
+    establishedYear: 1998,
+    status: 'active',
+    activeOpportunities: 2,
+    verifiedVolunteers: 28,
+    contactEmail: 'contact@darchabab-sebdou.dz',
+    phone: '+213 43 57 12 34',
+    presidentName: 'مدير دار الشباب الجيلالي اليابس سبدو',
+    logoInitial: 'DJS',
+    registrationDate: '2026-01-10',
+    documents: {
+      statute: true,
+      generalAssemblyMinutes: true,
+      wilayaApproval: true,
+    },
+  },
+  {
     id: 'ngo-1',
     name: 'الهلال الأحمر الجزائري - لجنة الإغاثة وتأهيل الشباب',
     licenseNumber: 'CRA-DZ-16-001',
@@ -2466,5 +2487,176 @@ export const saveCustomWorkshop = (ws: Workshop): void => {
     window.dispatchEvent(new Event('volunteernet_data_updated'));
   } catch (err) {
     console.error('Error saving workshop:', err);
+  }
+};
+
+
+export interface WorkshopProposal {
+  id: string;
+  ngoId: string;
+  ngoName: string;
+  ngoWilaya: string;
+  volunteerId: string;
+  volunteerName: string;
+  volunteerPhone?: string;
+  volunteerEmail?: string;
+  title: string;
+  category: string;
+  targetAudience: string;
+  durationHours: number;
+  proposedDate: string;
+  description: string;
+  learningOutcomes: string[];
+  equipmentNeeded: string[];
+  status: 'pending' | 'accepted' | 'rejected';
+  rejectionReason?: string;
+  submittedAt: string;
+  responseDate?: string;
+}
+
+export const MOCK_WORKSHOP_PROPOSALS: WorkshopProposal[] = [
+  {
+    id: 'prop-sebdou-001',
+    ngoId: 'ngo-sebdou-youth',
+    ngoName: 'دار الشباب الجيلالي اليابس سبدو',
+    ngoWilaya: 'تلمسان',
+    volunteerId: 'vol-zakaria',
+    volunteerName: 'مجدوب محمد زكرياء',
+    volunteerPhone: '+213 658 12 34 56',
+    volunteerEmail: 'zakaria.medjdoub@example.dz',
+    title: 'ورشة البرمجة والمنطق للأطفال عبر سكراتش (Scratch Kids Masterclass)',
+    category: 'تكنولوجيا وبرمجة',
+    targetAudience: 'أطفال وتلاميذ المدارس من 8 إلى 14 سنة ببلدية سبدو',
+    durationHours: 12,
+    proposedDate: '2026-10-29',
+    description: 'دورة تفاعلية تطبيقية لتعليم الأطفال أساسيات المنطق البرمجي وتصميم الرسوم المتحركة والألعاب البسيطة عبر واجهة Scratch الرسومية، مما يعزز التفكير النقدي والإبداع الرقمي.',
+    learningOutcomes: [
+      'فهم المفاهيم الأساسية للخوارزميات والحلقات التكرارية',
+      'بناء مشروع لعبة تفاعلية متكاملة لكل طفل',
+      'تعزيز مهارات حل المشكلات والتفكير الإبداعي والتعاون الجماعي',
+    ],
+    equipmentNeeded: [
+      'قاعة الإعلام الآلي مجهزة بحواسيب (10 إلى 15 جهاز)',
+      'جهاز عارض البيانات (DataShow)',
+      'سبورة بيضاء لتوضيح المفاهيم',
+    ],
+    status: 'accepted',
+    submittedAt: '2026-10-20',
+    responseDate: '2026-10-25',
+  },
+  {
+    id: 'prop-sebdou-002',
+    ngoId: 'ngo-sebdou-youth',
+    ngoName: 'دار الشباب الجيلالي اليابس سبدو',
+    ngoWilaya: 'تلمسان',
+    volunteerId: 'vol-abdessamad',
+    volunteerName: 'شاوي عبد الصمد',
+    volunteerPhone: '+213 661 98 76 54',
+    volunteerEmail: 'abdessamad.chawi@example.dz',
+    title: 'مبادئ الذكاء الاصطناعي التوليدي وهندسة الأوامر (Prompt Engineering) لليافعين',
+    category: 'ذكاء اصطناعي وتكنولوجيا',
+    targetAudience: 'تلاميذ الطور الثانوي والجامعيين والنوادي العلمية بسبدو',
+    durationHours: 16,
+    proposedDate: '2026-11-20',
+    description: 'ورشة موجهة لتمكين رواد دار الشباب من الاستفادة المسؤولة والآمنة من نماذج الذكاء الاصطناعي التوليدي في بحوثهم ومشاريعهم العلمية وصناعة المحتوى الرقمي الهادف.',
+    learningOutcomes: [
+      'التعرف على آليات عمل نماذج الذكاء الاصطناعي واللغة الكبيرة',
+      'إتقان تقنيات صياغة الأوامر للحصول على نتائج دقيقة ومثمرة',
+      'مراعاة أخلاقيات الذكاء الاصطناعي والتحقق من مصداقية المعلومات',
+    ],
+    equipmentNeeded: [
+      'أجهزة كمبيوتر موصولة بشبكة الإنترنت',
+      'شاشة عرض تفاعلية',
+    ],
+    status: 'pending',
+    submittedAt: '2026-11-02',
+  },
+  {
+    id: 'prop-cra-003',
+    ngoId: 'ngo-1',
+    ngoName: 'الهلال الأحمر الجزائري - لجنة الإغاثة وتأهيل الشباب',
+    ngoWilaya: 'الجزائر العاصمة',
+    volunteerId: 'vol-anas',
+    volunteerName: 'مير انس',
+    volunteerPhone: '+213 550 44 33 22',
+    volunteerEmail: 'anas.mir@example.dz',
+    title: 'إدارة وتأمين بيانات المتطوعين الميدانية في أوقات الطوارئ',
+    category: 'أمن المعلومات وإدارة الأزمات',
+    targetAudience: 'مشرفو ومنسقو فرق الإغاثة الميدانية',
+    durationHours: 8,
+    proposedDate: '2026-11-15',
+    description: 'تدريب على استخدام النماذج الرقمية غير المتصلة بالإنترنت لحصر الاحتياجات وتأمين سجلات المستفيدين وفق معايير الخصوصية الجزائرية.',
+    learningOutcomes: [
+      'تجهيز استمارات ميدانية غير متصلة بالإنترنت',
+      'تشفير وحماية البيانات الحساسة للمستفيدين',
+      'مزامنة آمنة عند توفر الاتصال',
+    ],
+    equipmentNeeded: [
+      'قاعة اجتماعات مجهزة',
+      'شاشة عرض',
+    ],
+    status: 'pending',
+    submittedAt: '2026-11-04',
+  },
+];
+
+const PROPOSALS_STORAGE_KEY = 'volunteernet_workshop_proposals';
+
+export const getStoredProposals = (): WorkshopProposal[] => {
+  try {
+    const raw = localStorage.getItem(PROPOSALS_STORAGE_KEY);
+    if (raw) {
+      const parsed: WorkshopProposal[] = JSON.parse(raw);
+      // Merge with default mock proposals (user custom items first)
+      const mockIds = new Set(parsed.map(p => p.id));
+      const remainingMocks = MOCK_WORKSHOP_PROPOSALS.filter(m => !mockIds.has(m.id));
+      return [...parsed, ...remainingMocks];
+    }
+  } catch (err) {
+    console.error('Error reading stored proposals:', err);
+  }
+  return MOCK_WORKSHOP_PROPOSALS;
+};
+
+export const saveWorkshopProposal = (proposal: WorkshopProposal): void => {
+  try {
+    const current = getStoredProposals();
+    const existingIndex = current.findIndex(p => p.id === proposal.id);
+    let updated: WorkshopProposal[];
+    if (existingIndex >= 0) {
+      updated = [...current];
+      updated[existingIndex] = proposal;
+    } else {
+      updated = [proposal, ...current];
+    }
+    localStorage.setItem(PROPOSALS_STORAGE_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new Event('volunteernet_proposals_updated'));
+  } catch (err) {
+    console.error('Error saving workshop proposal:', err);
+  }
+};
+
+export const updateProposalStatus = (
+  id: string,
+  status: 'accepted' | 'rejected',
+  rejectionReason?: string
+): void => {
+  try {
+    const list = getStoredProposals();
+    const updated = list.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          status,
+          rejectionReason: rejectionReason || item.rejectionReason,
+          responseDate: new Date().toISOString().split('T')[0],
+        };
+      }
+      return item;
+    });
+    localStorage.setItem(PROPOSALS_STORAGE_KEY, JSON.stringify(updated));
+    window.dispatchEvent(new Event('volunteernet_proposals_updated'));
+  } catch (err) {
+    console.error('Error updating proposal status:', err);
   }
 };

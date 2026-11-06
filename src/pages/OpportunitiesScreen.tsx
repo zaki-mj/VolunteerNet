@@ -14,6 +14,8 @@ import {
   ExternalLink,
   HeartHandshake,
   GraduationCap,
+  Lightbulb,
+  Sparkles,
 } from 'lucide-react';
 import { getStoredOpportunities, getStoredWorkshops, type Opportunity, type Workshop } from '../mock/data';
 import { OpportunityMap, type PointTypeFilter } from '../components/opportunities/OpportunityMap';
@@ -426,6 +428,36 @@ export const OpportunitiesScreen: React.FC = () => {
           </div>
         </div>
       )}
+
+      
+      {/* 💡 Suggest Workshop Callout Banner */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-teal-50 via-emerald-50 to-cyan-50 dark:from-teal-950/30 dark:via-emerald-950/30 dark:to-cyan-950/30 border border-emerald-200 dark:border-emerald-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <Lightbulb className="w-5 h-5 text-amber-300" />
+          </div>
+          <div>
+            <h4 className="font-bold text-xs sm:text-sm text-[var(--color-text)] flex items-center gap-2">
+              <span>هل لديك مهارة أو ورشة ترغب في تقديمها للأطفال أو الشباب؟</span>
+              <span className="hidden md:inline px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300">
+                مبادرة حرة
+              </span>
+            </h4>
+            <p className="text-[11px] sm:text-xs text-[var(--color-text-muted)] mt-0.5">
+              اقترح دورتك التدريبية مباشرة على دور الشباب والجمعيات المعتمدة (مثل <strong className="text-[var(--color-text)]">دار الشباب الجيلالي اليابس سبدو - تلمسان</strong>) لتوفير القاعة والعتاد واعتماد ساعاتك!
+            </p>
+          </div>
+        </div>
+
+        <Link
+          to="/suggest-workshop?ngoId=ngo-sebdou-youth"
+          className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold transition-all shadow-xs self-end sm:self-auto hover:scale-102"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+          <span>تقديم مقترح ورشة تدريبية</span>
+        </Link>
+      </div>
+
 
       {/* 🎯 MAIN VIEWPORTS */}
 
